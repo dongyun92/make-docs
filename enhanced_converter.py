@@ -139,27 +139,27 @@ class HTMLBasedConverter:
             print("HTML 파일들이 먼저 캡처되었는지 확인해주세요.")
 
 
-def convert_with_prompt_templates(md_file: str, output_file: str, business_topic: str = None) -> bool:
+def convert_with_comprehensive_approach(md_file: str, output_file: str, business_topic: str = None) -> bool:
     """
-    프롬프트 템플릿 기반 변환 (향후 확장용)
+    포괄적 프롬프트 기반 변환 (Claude 포괄적 생성 결과 활용)
     
     Args:
         md_file: MD 파일 경로
         output_file: 출력 파일 경로
-        business_topic: 사업 주제 (차트 생성 시 사용)
+        business_topic: 사업 주제 (참고용)
         
     Returns:
         변환 성공 여부
     """
     try:
-        print(f"📋 프롬프트 템플릿 기반 변환: {md_file}")
+        print(f"📋 포괄적 프롬프트 결과 변환: {md_file}")
         
-        # 기본 변환 (HTML 파일 없이)
+        # 기본 변환 (Claude가 생성한 MD 파일 변환)
         converter = HTMLBasedConverter()
         converter.enhanced_converter.convert(md_file, output_file)
         
         print(f"✅ 기본 변환 완료: {output_file}")
-        print("💡 향후 프롬프트 템플릿 기반 차트 자동 생성 기능이 추가될 예정입니다.")
+        print("💡 HTML 파일들이 있다면 GUI에서 함께 선택하여 완전한 변환을 수행하세요.")
         
         return True
         
@@ -168,17 +168,43 @@ def convert_with_prompt_templates(md_file: str, output_file: str, business_topic
         return False
 
 
+def show_comprehensive_prompt_example(business_topic: str = "AI 챗봇 서비스"):
+    """포괄적 프롬프트 예시를 출력합니다."""
+    from prompt_templates import BusinessPlanPromptTemplates
+    
+    templates = BusinessPlanPromptTemplates()
+    
+    print("="*80)
+    print("포괄적 사업계획서 생성 프롬프트 예시")
+    print("="*80)
+    
+    example_prompt = templates.generate_example_prompt(business_topic)
+    print(example_prompt)
+    
+    print("="*80)
+    print("위 프롬프트를 Claude에게 전달하면:")
+    print("1. 완전한 사업계획서 MD 파일")
+    print("2. 관련된 모든 HTML 차트 파일들")
+    print("3. 파일명 기반으로 자동 매칭되는 구조")
+    print("가 모두 생성됩니다.")
+    print("="*80)
+
+
 if __name__ == "__main__":
+    # 포괄적 프롬프트 예시 출력
+    show_comprehensive_prompt_example("재래식 무기 탑재 공격드론 방어시스템")
+    
     # 테스트 코드
     converter = HTMLBasedConverter()
     
     # 테스트 파일들
     test_md = "attack_drone_defense_system.md"
     test_htmls = [
-        "images/chart_attack_drone_defense_system_1.html",
-        "images/chart_attack_drone_defense_system_2.html"
+        "images/market_growth_line.html",
+        "images/budget_pie.html",
+        "images/risk_matrix.html"
     ]
-    test_output = "output/test_enhanced_conversion.docx"
+    test_output = "output/test_comprehensive_conversion.docx"
     
     if os.path.exists(test_md):
         success = converter.convert_md_with_htmls(test_md, test_htmls, test_output)
@@ -188,3 +214,4 @@ if __name__ == "__main__":
             print("❌ 테스트 변환 실패!")
     else:
         print(f"테스트 파일 {test_md}을 찾을 수 없습니다.")
+        print("포괄적 프롬프트를 사용하여 Claude로부터 MD 파일과 HTML 파일들을 생성하세요.")

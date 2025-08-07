@@ -1,12 +1,56 @@
 """
-사업계획서 차트 생성을 위한 프롬프트 템플릿 시스템
+포괄적 사업계획서 생성을 위한 프롬프트 템플릿 시스템
 """
 
-class ChartPromptTemplates:
-    """사업계획서 각 섹션별 차트 생성 프롬프트 템플릿"""
+class BusinessPlanPromptTemplates:
+    """포괄적 사업계획서 생성을 위한 프롬프트 템플릿"""
     
     def __init__(self):
-        self.templates = {
+        self.comprehensive_template = """
+{business_topic} 사업계획서를 작성하려해. {format_requirements}에 맞춰 마크다운형식으로 작성해줘. 
+다이어그램, 표, 차트 등 시각화 자료를 각각 html로 만들어서 활용할 수 있게 해줘.
+
+**사업계획서 구조**:
+1. **사업 개요**
+2. **시장 분석**
+3. **경쟁 분석**
+4. **기술 분석**
+5. **사업 모델**
+6. **마케팅 전략**
+7. **재무 계획**
+8. **위험 분석**
+9. **향후 계획**
+
+**시각화 자료 요구사항**:
+- 각 섹션에 적절한 차트나 다이어그램을 HTML 파일로 생성
+- 파일명은 섹션 내용과 연관되도록 명명 (예: market_growth_chart.html, budget_allocation.html)
+- 사업계획서 MD 파일에서 해당 HTML 파일명을 이미지로 참조
+
+**HTML 파일 생성 규칙**:
+- 완전한 HTML 파일 (<!DOCTYPE html>로 시작)
+- 한글 폰트 지원 ('Malgun Gothic', 'Arial', sans-serif)
+- 제목 없이 순수 차트/다이어그램만
+- 적절한 크기 (차트: 900x600px, 파이차트: 700x700px)
+- 현실적이고 의미있는 데이터 사용
+
+**마크다운 이미지 참조 형식**:
+![차트](images/파일명.png)
+<그림 번호> 캡션
+
+**필수 시각화 자료**:
+- 시장 성장률 추이 차트 (market_growth_line.html)
+- 지역별 시장 규모 (market_regional.html)
+- 경쟁사 비교 분석 (competition_analysis.html)
+- 기술 수준 비교 (technology_level.html)
+- 예산 배분 (budget_pie.html)
+- 매출 전망 (revenue_projection.html)
+- 위험 매트릭스 (risk_matrix.html)
+
+해당 HTML에서 내가 알아서 캡처할테니 사업계획서에 자료들 필요한 위치에 해당 필요 파일명으로 배치해주면 내가 인식해서 거기에 캡처해당그림을 넣을게.
+        """
+        
+        # 기존 개별 차트 템플릿도 유지 (호환성)
+        self.individual_templates = {
             "market_analysis": {
                 "growth_chart": """
 다음 조건에 맞는 시장 성장률 차트 HTML을 생성해주세요:
@@ -43,24 +87,6 @@ class ChartPromptTemplates:
 - 차트 크기: 900x600px
 - Y축은 데이터에 적합한 스케일링
 - 색상: 블루 계열
-
-**출력 형식**: 완전한 HTML 파일
-                """,
-                
-                "competition_chart": """
-다음 조건에 맞는 경쟁사 비교 차트 HTML을 생성해주세요:
-
-**주제**: {business_topic}
-**차트 타입**: 레이더 차트 (Radar Chart)
-**데이터 요구사항**:
-- 기술력, 자본력, 시장점유율, 브랜드력, 혁신성 5개 축
-- 자사와 주요 경쟁사 2-3개 비교
-- 각 축 0-100점 스케일
-
-**스타일 요구사항**:
-- 반투명 색상 사용
-- 각 회사별 다른 색상
-- 범례 표시
 
 **출력 형식**: 완전한 HTML 파일
                 """
@@ -163,9 +189,25 @@ class ChartPromptTemplates:
             }
         }
     
-    def get_prompt(self, category: str, chart_type: str, business_topic: str) -> str:
+    def get_comprehensive_prompt(self, business_topic: str, format_requirements: str = "표준 사업계획서 양식") -> str:
         """
-        지정된 카테고리와 차트 타입의 프롬프트를 가져옵니다.
+        포괄적 사업계획서 생성 프롬프트를 반환합니다.
+        
+        Args:
+            business_topic: 사업 주제
+            format_requirements: 양식 요구사항
+            
+        Returns:
+            포맷된 포괄적 프롬프트 문자열
+        """
+        return self.comprehensive_template.format(
+            business_topic=business_topic,
+            format_requirements=format_requirements
+        )
+    
+    def get_individual_prompt(self, category: str, chart_type: str, business_topic: str) -> str:
+        """
+        개별 차트 생성 프롬프트를 가져옵니다. (호환성 유지)
         
         Args:
             category: 분석 카테고리 (market_analysis, financial_analysis 등)
@@ -175,8 +217,8 @@ class ChartPromptTemplates:
         Returns:
             포맷된 프롬프트 문자열
         """
-        if category in self.templates and chart_type in self.templates[category]:
-            return self.templates[category][chart_type].format(business_topic=business_topic)
+        if category in self.individual_templates and chart_type in self.individual_templates[category]:
+            return self.individual_templates[category][chart_type].format(business_topic=business_topic)
         else:
             return self._generate_generic_prompt(chart_type, business_topic)
     
@@ -204,13 +246,34 @@ class ChartPromptTemplates:
     
     def get_all_categories(self) -> list:
         """사용 가능한 모든 카테고리 반환"""
-        return list(self.templates.keys())
+        return list(self.individual_templates.keys())
     
     def get_chart_types(self, category: str) -> list:
         """특정 카테고리의 모든 차트 타입 반환"""
-        if category in self.templates:
-            return list(self.templates[category].keys())
+        if category in self.individual_templates:
+            return list(self.individual_templates[category].keys())
         return []
+    
+    def generate_example_prompt(self, business_topic: str) -> str:
+        """
+        사용자에게 보여줄 예시 프롬프트를 생성합니다.
+        
+        Args:
+            business_topic: 사업 주제
+            
+        Returns:
+            예시 프롬프트 문자열
+        """
+        return f"""
+예시 프롬프트:
+
+{business_topic} 사업계획서를 작성하려해. 표준 사업계획서 양식에 맞춰 마크다운형식으로 작성해줘. 
+다이어그램, 표, 차트 등 시각화 자료를 각각 html로 만들어서 활용할 수 있게 해줘.
+
+해당 html에서 내가 알아서 캡처할테니 사업계획서에 자료들 필요한 위치에 해당 필요 파일명으로 배치해주면 내가 인식해서 거기에 캡처해당그림을 넣을게.
+
+위 프롬프트를 Claude에게 전달하면 완전한 사업계획서와 필요한 HTML 차트들이 모두 생성됩니다.
+        """
 
 
 class BusinessPlanChartMatcher:
@@ -273,21 +336,41 @@ class BusinessPlanChartMatcher:
 
 if __name__ == "__main__":
     # 사용 예시
-    templates = ChartPromptTemplates()
+    templates = BusinessPlanPromptTemplates()
     matcher = BusinessPlanChartMatcher()
     
     # 사업 주제
     business_topic = "재래식 무기를 탑재한 공격 드론 방어 시스템"
     
-    # 섹션별 프롬프트 생성 예시
+    print("="*80)
+    print("새로운 포괄적 사업계획서 생성 방식")
+    print("="*80)
+    
+    # 포괄적 프롬프트 생성
+    comprehensive_prompt = templates.get_comprehensive_prompt(business_topic)
+    print(comprehensive_prompt)
+    
+    print("\n" + "="*80)
+    print("사용자 예시 프롬프트")
+    print("="*80)
+    
+    # 예시 프롬프트
+    example = templates.generate_example_prompt(business_topic)
+    print(example)
+    
+    print("\n" + "="*80)
+    print("기존 개별 차트 생성 방식 (호환성)")
+    print("="*80)
+    
+    # 개별 섹션별 프롬프트 생성 예시 (기존 방식)
     sections = ["시장 분석", "예산 계획", "기술 수준", "위험 분석"]
     
     for section in sections:
         category, chart_type = matcher.match_section_to_chart(section)
-        prompt = templates.get_prompt(category, chart_type, business_topic)
+        prompt = templates.get_individual_prompt(category, chart_type, business_topic)
         
-        print(f"\n{'='*50}")
+        print(f"\n{'-'*50}")
         print(f"섹션: {section}")
         print(f"카테고리: {category}, 차트타입: {chart_type}")
-        print(f"{'='*50}")
-        print(prompt)
+        print(f"{'-'*50}")
+        print(prompt[:200] + "...")  # 첫 200자만 표시

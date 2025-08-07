@@ -483,8 +483,8 @@ class MDToDOCXConverter:
                 )
             else:
                 # HTML 파일이 없으면 기본 변환
-                from enhanced_converter import convert_with_prompt_templates
-                success = convert_with_prompt_templates(
+                from enhanced_converter import convert_with_comprehensive_approach
+                success = convert_with_comprehensive_approach(
                     self.selected_md_file.get(),
                     output_file
                 )
