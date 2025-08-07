@@ -28,6 +28,7 @@ class MDToDOCXConverter:
         
         # 변수 초기화
         self.selected_md_file = tk.StringVar()
+        self.selected_html_files = []  # HTML 파일 리스트
         self.output_directory = tk.StringVar()
         self.output_filename = tk.StringVar()
         
@@ -88,6 +89,33 @@ class MDToDOCXConverter:
                   command=self.browse_md_file).grid(row=0, column=1)
         
         md_frame.columnconfigure(0, weight=1)
+        
+        # HTML 파일들 섹션
+        html_frame = ttk.LabelFrame(file_frame, text="HTML 차트 파일들 (선택사항)", padding="10")
+        html_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
+        
+        ttk.Label(html_frame, text="HTML 파일들:").grid(row=0, column=0, sticky=tk.W, pady=(0, 5))
+        
+        html_select_frame = ttk.Frame(html_frame)
+        html_select_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        
+        ttk.Button(html_select_frame, text="HTML 파일들 선택", 
+                  command=self.browse_html_files).grid(row=0, column=0, padx=(0, 10))
+        
+        self.html_count_label = ttk.Label(html_select_frame, text="선택된 파일: 0개", foreground='gray')
+        self.html_count_label.grid(row=0, column=1)
+        
+        self.html_listbox = tk.Listbox(html_frame, height=4, selectmode=tk.EXTENDED)
+        html_scrollbar = ttk.Scrollbar(html_frame, orient="vertical", command=self.html_listbox.yview)
+        self.html_listbox.configure(yscrollcommand=html_scrollbar.set)
+        
+        self.html_listbox.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(0, 5))
+        html_scrollbar.grid(row=2, column=1, sticky=(tk.N, tk.S), pady=(0, 5))
+        
+        ttk.Button(html_frame, text="선택 파일 제거", 
+                  command=self.remove_selected_html).grid(row=3, column=0, sticky=tk.W)
+        
+        html_frame.columnconfigure(0, weight=1)
         
         # 출력 설정 섹션
         output_frame = ttk.LabelFrame(main_frame, text="출력 설정", padding="10")
@@ -172,6 +200,56 @@ class MDToDOCXConverter:
             self.output_filename.set(f"{base_name}.docx")
             
             self.log_message(f"선택된 파일: {file_path}")
+    
+    def browse_html_files(self):
+        """HTML 파일들 선택"""
+        files = filedialog.askopenfilenames(
+            title="HTML 파일들 선택",
+            filetypes=[
+                ("HTML files", "*.html"),
+                ("All files", "*.*")
+            ],
+            multiple=True
+        )
+        
+        if files:
+            # 기존 파일들에 추가
+            for file_path in files:
+                if file_path not in self.selected_html_files:
+                    self.selected_html_files.append(file_path)
+            
+            self._update_html_display()
+            self.log_message(f"HTML 파일 {len(files)}개 추가됨")
+    
+    def remove_selected_html(self):
+        """선택된 HTML 파일들 제거"""
+        selected_indices = self.html_listbox.curselection()
+        
+        if not selected_indices:
+            messagebox.showinfo("알림", "제거할 파일을 선택해주세요.")
+            return
+        
+        # 역순으로 제거 (인덱스 변화 방지)
+        for index in reversed(selected_indices):
+            if 0 <= index < len(self.selected_html_files):
+                removed_file = self.selected_html_files.pop(index)
+                self.log_message(f"제거됨: {os.path.basename(removed_file)}")
+        
+        self._update_html_display()
+    
+    def _update_html_display(self):
+        """HTML 파일 목록 표시 업데이트"""
+        # 리스트박스 클리어
+        self.html_listbox.delete(0, tk.END)
+        
+        # 파일들 추가
+        for html_file in self.selected_html_files:
+            filename = os.path.basename(html_file)
+            self.html_listbox.insert(tk.END, filename)
+        
+        # 카운트 라벨 업데이트
+        count = len(self.selected_html_files)
+        self.html_count_label.config(text=f"선택된 파일: {count}개")
     
     def browse_output_dir(self):
         """출력 폴더 선택"""
@@ -281,8 +359,51 @@ class MDToDOCXConverter:
             self.log_message(f"⚠️ 차트 생성 시스템 오류: {str(e)} - 기본 차트 생성으로 대체")
             self.generate_charts()
     
+    def capture_html_files(self):
+        """선택된 HTML 파일들을 PNG로 변환"""
+        if not self.selected_html_files:
+            self.log_message("선택된 HTML 파일이 없습니다.")
+            return
+        
+        if not self.chrome_path:
+            self.log_message("Chrome이 없어 HTML 캡처를 건너뜁니다.")
+            return
+        
+        self.log_message(f"선택된 HTML 파일 {len(self.selected_html_files)}개를 PNG로 변환합니다...")
+        
+        images_dir = Path("images")
+        images_dir.mkdir(exist_ok=True)
+        
+        for html_file in self.selected_html_files:
+            html_path = Path(html_file)
+            png_file = images_dir / f"{html_path.stem}.png"
+            
+            try:
+                cmd = [
+                    self.chrome_path,
+                    "--headless",
+                    "--disable-gpu",
+                    "--hide-scrollbars",
+                    "--force-device-scale-factor=1",
+                    "--window-size=900,600",
+                    f"--screenshot={png_file}",
+                    str(html_path.absolute())
+                ]
+                
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+                
+                if png_file.exists():
+                    self.log_message(f"✅ {html_path.name} → {png_file.name}")
+                else:
+                    self.log_message(f"⚠️ {html_path.name} 캡처 실패")
+                    
+            except subprocess.TimeoutExpired:
+                self.log_message(f"⚠️ {html_path.name} 캡처 시간 초과")
+            except Exception as e:
+                self.log_message(f"⚠️ {html_path.name} 캡처 오류: {str(e)}")
+    
     def auto_generate_and_capture_charts(self):
-        """프로젝트별 고유 차트 자동 생성"""
+        """프로젝트별 고유 차트 자동 생성 (레거시 지원)"""
         try:
             # 1. 선택된 MD 파일로 고유 차트 생성
             md_file = self.selected_md_file.get()
@@ -295,9 +416,6 @@ class MDToDOCXConverter:
             self.log_message(f"✅ {len(chart_configs)}개의 고유 차트가 생성되었습니다!")
             for chart in chart_configs:
                 self.log_message(f"  - {chart['filename']}.png ({chart['type']})")
-            
-            # 3. 기존 고정 차트들도 생성 (호환성을 위해)
-            self.generate_charts()
             
         except Exception as e:
             self.log_message(f"⚠️ 고유 차트 생성 실패: {str(e)} - 기본 차트만 사용")
@@ -348,65 +466,40 @@ class MDToDOCXConverter:
             
             self.log_message(f"출력 파일: {output_file}")
             
-            # 개선된 변환기 사용
-            converter_path = os.path.join(os.getcwd(), "simple_thermal_converter.py")
-            if not os.path.exists(converter_path):
-                error_msg = "simple_thermal_converter.py 파일을 찾을 수 없습니다."
-                self.log_message(f"❌ {error_msg}")
-                messagebox.showerror("파일 오류", error_msg)
-                return
+            # HTML 파일들 캡처 (선택사항)
+            if self.selected_html_files:
+                self.capture_html_files()
             
-            # 차트 자동 생성 및 캡처
-            self.auto_generate_and_capture_charts()
+            # 향상된 변환기 사용
+            from enhanced_converter import HTMLBasedConverter
+            converter = HTMLBasedConverter()
             
-            # Python 실행 파일 경로 확인
-            python_cmd = sys.executable
-            self.log_message(f"Python 경로: {python_cmd}")
-            
-            # 변환 스크립트 실행
-            self.log_message("문서 변환을 시작합니다...")
-            
-            # 개선된 변환기로 직접 변환
-            from simple_thermal_converter import SimpleThermalConverter
-            converter = SimpleThermalConverter()
-            result_file = converter.convert(self.selected_md_file.get())
-            
-            # 출력 파일을 지정된 위치로 이동
-            if result_file != output_file:
-                import shutil
-                shutil.move(result_file, output_file)
-                self.log_message(f"파일 이동: {result_file} → {output_file}")
-            
-            self.log_message("✅ 변환이 성공적으로 완료되었습니다!")
-            messagebox.showinfo("변환 완료", 
-                f"변환이 완료되었습니다!\n\n생성된 파일: {output_file}")
-            return  # 성공적으로 완료되었으므로 아래 subprocess 코드는 실행하지 않음
-            
-            self.log_message(f"실행 명령: {' '.join(cmd)}")
-            
-            result = subprocess.run(cmd, capture_output=True, text=True, cwd=os.getcwd())
-            
-            if result.returncode == 0:
-                self.log_message("✅ 변환이 성공적으로 완료되었습니다!")
-                self.log_message(f"생성된 파일: {output_file}")
-                
-                if result.stdout:
-                    self.log_message("변환 로그:")
-                    self.log_message(result.stdout)
-                
-                # 성공 메시지박스
-                messagebox.showinfo("변환 완료", 
-                    f"변환이 완료되었습니다!\n\n생성된 파일: {output_file}")
-                
+            # HTML 파일들과 함께 변환
+            if self.selected_html_files:
+                success = converter.convert_md_with_htmls(
+                    self.selected_md_file.get(),
+                    self.selected_html_files,
+                    output_file
+                )
             else:
-                self.log_message(f"❌ 변환 중 오류가 발생했습니다:")
-                if result.stdout:
-                    self.log_message(f"표준 출력: {result.stdout}")
-                if result.stderr:
-                    self.log_message(f"오류 내용: {result.stderr}")
-                
-                messagebox.showerror("변환 실패", 
-                    f"변환 중 오류가 발생했습니다:\n\n{result.stderr}\n\n자세한 내용은 로그를 확인해주세요.")
+                # HTML 파일이 없으면 기본 변환
+                from enhanced_converter import convert_with_prompt_templates
+                success = convert_with_prompt_templates(
+                    self.selected_md_file.get(),
+                    output_file
+                )
+            
+            if success:
+                self.log_message("✅ 문서 변환이 완료되었습니다!")
+                messagebox.showinfo("완료", f"변환이 완료되었습니다!\n\n출력 파일: {output_file}")
+            else:
+                self.log_message("❌ 문서 변환 중 오류가 발생했습니다.")
+                messagebox.showerror("오류", "변환 중 오류가 발생했습니다.")
+            
+            # 레거시 차트 자동 생성 (HTML 파일이 없는 경우에만)
+            if not self.selected_html_files:
+                self.log_message("💡 레거시 차트 시스템으로 차트를 생성합니다...")
+                self.auto_generate_and_capture_charts()
                 
         except Exception as e:
             error_msg = f"변환 중 예외가 발생했습니다: {str(e)}"
