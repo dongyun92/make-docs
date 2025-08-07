@@ -1,0 +1,26 @@
+{
+  "market_growth_line": {
+    "width": 720,
+    "height": 520
+  },
+  "budget_pie": {
+    "width": 680,
+    "height": 520
+  },
+  "trl_roadmap": {
+    "width": 800,
+    "height": 600
+  },
+  "system_architecture": {
+    "width": 800,
+    "height": 600
+  },
+  "swot_analysis": {
+    "width": 800,
+    "height": 600
+  },
+  "risk_matrix": {
+    "width": 800,
+    "height": 600
+  }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>기술 분야별 국내외 수준 격차</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
+    
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {"labels": ["레이더 탐지", "전자광학", "음향 탐지", "RF 탐지", "AI 융합"], "datasets": [{"label": "국내 수준 (%)", "data": [70, 65, 60, 80, 45], "backgroundColor": "#3498db"}, {"label": "해외 선진국 (%)", "data": [100, 100, 100, 100, 100], "backgroundColor": "#e74c3c"}]},
+            options: {"responsive": true, "scales": {"y": {"beginAtZero": true, "max": 105}}}
+        });
+    </script>
+</body>
+</html>

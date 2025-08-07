@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리스크 매트릭스</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: auto;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+        .matrix-container {
+            position: relative;
+            margin: 30px 0;
+        }
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 2px;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            border: 2px solid #34495e;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .matrix-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .low-low { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .low-medium { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+        .low-high { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .medium-low { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+        .medium-medium { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .medium-high { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .high-low { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .high-medium { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .high-high { background: linear-gradient(135deg, #8e44ad, #7d3c98); }
+        .risk-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .risk-point:hover {
+            transform: scale(1.2);
+        }
+        .risk-1 { background: #e74c3c; top: 25%; left: 25%; }
+        .risk-2 { background: #f39c12; top: 25%; left: 50%; }
+        .risk-3 { background: #3498db; top: 50%; left: 25%; }
+        .risk-4 { background: #27ae60; top: 50%; left: 50%; }
+        .risk-5 { background: #9b59b6; top: 75%; left: 50%; }
+        .axis-label {
+            position: absolute;
+            font-weight: bold;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        .x-axis {
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .y-axis {
+            left: -80px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+        .scale-labels {
+            position: absolute;
+        }
+        .x-scale {
+            bottom: -20px;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        .y-scale {
+            left: -40px;
+            font-size: 12px;
+            color: #7f8c8d;
+            transform: translateY(-50%);
+        }
+        .legend {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .legend-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">리스크 매트릭스 - 발생확률 vs 영향도</div>
+        
+        <div class="matrix-container">
+            <div class="matrix">
+                <!-- 4x4 매트릭스 -->
+                <div class="matrix-cell high-high"></div>
+                <div class="matrix-cell high-high"></div>
+                <div class="matrix-cell high-medium"></div>
+                <div class="matrix-cell high-low"></div>
+                
+                <div class="matrix-cell high-high"></div>
+                <div class="matrix-cell high-medium">
+                    <div class="risk-point risk-1" title="핵심기술개발실패"></div>
+                </div>
+                <div class="matrix-cell medium-medium">
+                    <div class="risk-point risk-3" title="국제정세변화"></div>
+                </div>
+                <div class="matrix-cell medium-low"></div>
+                
+                <div class="matrix-cell high-medium">
+                    <div class="risk-point risk-2" title="기술변화대응"></div>
+                </div>
+                <div class="matrix-cell medium-medium">
+                    <div class="risk-point risk-4" title="환율변동"></div>
+                </div>
+                <div class="matrix-cell medium-low"></div>
+                <div class="matrix-cell low-low"></div>
+                
+                <div class="matrix-cell medium-high"></div>
+                <div class="matrix-cell medium-medium">
+                    <div class="risk-point risk-5" title="예산삭감"></div>
+                </div>
+                <div class="matrix-cell low-low"></div>
+                <div class="matrix-cell low-low"></div>
+            </div>
+            
+            <!-- 축 레이블 -->
+            <div class="axis-label x-axis">발생확률</div>
+            <div class="axis-label y-axis">영향도</div>
+            
+            <!-- 척도 레이블 -->
+            <div class="scale-labels x-scale" style="left: 12%;">낮음</div>
+            <div class="scale-labels x-scale" style="left: 37%;">중간</div>
+            <div class="scale-labels x-scale" style="left: 62%;">높음</div>
+            <div class="scale-labels x-scale" style="left: 87%;">매우높음</div>
+            
+            <div class="scale-labels y-scale" style="top: 87%;">낮음</div>
+            <div class="scale-labels y-scale" style="top: 62%;">중간</div>
+            <div class="scale-labels y-scale" style="top: 37%;">높음</div>
+            <div class="scale-labels y-scale" style="top: 12%;">매우높음</div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-title">주요 리스크 요인</div>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #e74c3c;"></div>
+                    <span>핵심기술개발실패 (고확률-고영향)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f39c12;"></div>
+                    <span>기술변화대응 (중확률-고영향)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3498db;"></div>
+                    <span>국제정세변화 (고확률-중영향)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #27ae60;"></div>
+                    <span>환율변동 (중확률-중영향)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #9b59b6;"></div>
+                    <span>예산삭감 (중확률-저영향)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+        

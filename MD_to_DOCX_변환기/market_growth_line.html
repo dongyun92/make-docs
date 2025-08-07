@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국 방산 수출 성장 추이</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: white;
+        }
+        .container {
+            background: white;
+            padding: 15px;
+            width: 650px;
+            height: 450px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="growthChart"></canvas>
+    </div>
+
+    <script>
+        // 방산 수출 성장 추이 차트
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['2019', '2021', '2023', '2024 목표', '2025', '2027', '2030'],
+                datasets: [
+                    {
+                        label: '실적 (막대)',
+                        type: 'bar',
+                        data: [45, 93, 140, null, null, null, null],
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderColor: 'rgba(52, 152, 219, 0.6)',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '실적',
+                        data: [45, 93, 140, null, null, null, null],
+                        borderColor: '#2c3e50',
+                        backgroundColor: 'transparent',
+                        pointBackgroundColor: '#2c3e50',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '2024 목표',
+                        data: [null, null, null, 200, null, null, null],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'transparent',
+                        pointBackgroundColor: '#e74c3c',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointStyle: 'rectRot',
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '최적 시나리오',
+                        data: [null, null, null, null, 180, 220, 250],
+                        borderColor: '#27ae60',
+                        borderDash: [5, 5],
+                        backgroundColor: 'transparent',
+                        pointBackgroundColor: '#27ae60',
+                        pointBorderWidth: 1.5,
+                        pointRadius: 3,
+                        tension: 0.3,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '기준 시나리오',
+                        data: [null, null, null, null, 170, 200, 220],
+                        borderColor: '#f39c12',
+                        backgroundColor: 'transparent',
+                        pointBackgroundColor: '#f39c12',
+                        pointBorderWidth: 1.5,
+                        pointRadius: 3,
+                        tension: 0.3,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '보수 시나리오',
+                        data: [null, null, null, null, 160, 180, 180],
+                        borderColor: '#95a5a6',
+                        borderDash: [3, 3],
+                        backgroundColor: 'transparent',
+                        pointBackgroundColor: '#95a5a6',
+                        pointBorderWidth: 1.5,
+                        pointRadius: 3,
+                        tension: 0.3,
+                        yAxisID: 'y'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            padding: 8,
+                            usePointStyle: true,
+                            font: { size: 11 },
+                            filter: function(legendItem, chartData) {
+                                return legendItem.text !== '실적 (막대)';
+                            }
+                        }
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 80,
+                        ticks: {
+                            stepSize: 10,
+                            font: { size: 11 },
+                            color: '#666'
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)',
+                            lineWidth: 0.5
+                        },
+                        title: {
+                            display: true,
+                            text: '수출액 (억 달러)',
+                            font: { size: 12, weight: '600' },
+                            color: '#333'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)',
+                            lineWidth: 0.5
+                        },
+                        ticks: {
+                            font: { size: 11 },
+                            color: '#666'
+                        },
+                        title: {
+                            display: true,
+                            text: '연도',
+                            font: { size: 12, weight: '600' },
+                            color: '#333'
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+        

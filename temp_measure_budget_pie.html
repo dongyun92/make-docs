@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분야별 투자 배분</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: white;
+        }
+        .container {
+            background: white;
+            padding: 15px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="distributionChart"></canvas>
+    </div>
+
+    <script>
+        // 분야별 투자 배분 차트
+        const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+            type: 'pie',
+            data: {
+                labels: ['무인체계', 'AI/빅데이터', '통신기술', '센서/반도체', '기타 신기술'],
+                datasets: [{
+                    data: [1050, 700, 875, 525, 350],
+                    backgroundColor: [
+                        '#2c3e50',  // 다크 네이비 - 무인체계
+                        '#34495e',  // 다크 그레이 - AI/빅데이터  
+                        '#3498db',  // 블루 - 통신기술
+                        '#e74c3c',  // 레드 - 센서/반도체
+                        '#f39c12'   // 오렌지 - 기타 신기술
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#fff',
+                    hoverBorderWidth: 5,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: { size: 12 },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    return data.labels.map((label, i) => {
+                                        const value = data.datasets[0].data[i];
+                                        const percentage = ((value / data.datasets[0].data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                                        return {
+                                            text: `${label} (${value}억원, ${percentage}%)`,
+                                            fillStyle: data.datasets[0].backgroundColor[i],
+                                            index: i
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((sum, value) => sum + value, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.parsed}억원 (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+<script>
+window.addEventListener('load', function() {
+    // Chart.js가 완전히 로드되기까지 대기
+    setTimeout(function() {
+        const body = document.body;
+        const rect = body.getBoundingClientRect();
+        const computedStyle = window.getComputedStyle(body);
+        
+        // 실제 필요한 크기 계산 (padding, margin 포함)
+        const actualWidth = Math.ceil(rect.width);
+        const actualHeight = Math.ceil(rect.height);
+        
+        // 결과를 페이지에 표시
+        const resultDiv = document.createElement('div');
+        resultDiv.style.position = 'fixed';
+        resultDiv.style.top = '10px';
+        resultDiv.style.left = '10px';
+        resultDiv.style.background = 'rgba(0,0,0,0.8)';
+        resultDiv.style.color = 'white';
+        resultDiv.style.padding = '10px';
+        resultDiv.style.fontSize = '14px';
+        resultDiv.style.fontFamily = 'monospace';
+        resultDiv.style.zIndex = '9999';
+        resultDiv.style.borderRadius = '5px';
+        
+        resultDiv.innerHTML = `
+            <strong>Body 크기 측정 결과:</strong><br>
+            Width: ${actualWidth}px<br>
+            Height: ${actualHeight}px<br>
+            <br>
+            <strong>Chrome 캡처 명령어:</strong><br>
+            --window-size=${actualWidth},${actualHeight}
+        `;
+        
+        document.body.appendChild(resultDiv);
+        
+        // 콘솔에도 출력
+        console.log('PRECISE_SIZE:', JSON.stringify({
+            width: actualWidth,
+            height: actualHeight,
+            file: '${Path(original_html).name}'
+        }));
+        
+    }, 3000); // 3초 대기 (Chart.js 완전 로딩)
+});
+</script>
+</body>
+
+</html>
+        

@@ -1,0 +1,194 @@
+{
+  "trl_roadmap": {
+    "width": 1600,
+    "height": 1189,
+    "complexity_score": 71.5,
+    "chart_type": "roadmap",
+    "scaling_factor": 1.4865,
+    "aspect_ratio": 1.5,
+    "complexity_details": {
+      "text_density": 80,
+      "layout_complexity": 50,
+      "element_count": 100,
+      "grid_complexity": 100,
+      "table_complexity": 0,
+      "total_score": 71.5
+    }
+  },
+  "budget_trend": {
+    "width": 1600,
+    "height": 788,
+    "complexity_score": 26.0,
+    "chart_type": "bar",
+    "scaling_factor": 0.986,
+    "aspect_ratio": 1.4,
+    "complexity_details": {
+      "text_density": 80,
+      "layout_complexity": 0,
+      "element_count": 10,
+      "grid_complexity": 0,
+      "table_complexity": 0,
+      "total_score": 26.0
+    }
+  },
+  "market_growth_regional": {
+    "width": 1600,
+    "height": 788,
+    "complexity_score": 26.0,
+    "chart_type": "line",
+    "scaling_factor": 0.986,
+    "aspect_ratio": 1.4,
+    "complexity_details": {
+      "text_density": 80,
+      "layout_complexity": 0,
+      "element_count": 10,
+      "grid_complexity": 0,
+      "table_complexity": 0,
+      "total_score": 26.0
+    }
+  },
+  "market_growth_line": {
+    "width": 1600,
+    "height": 841,
+    "complexity_score": 32.0,
+    "chart_type": "line",
+    "scaling_factor": 1.052,
+    "aspect_ratio": 1.4,
+    "complexity_details": {
+      "text_density": 100,
+      "layout_complexity": 0,
+      "element_count": 10,
+      "grid_complexity": 0,
+      "table_complexity": 0,
+      "total_score": 32.0
+    }
+  },
+  "budget_distribution": {
+    "width": 1600,
+    "height": 1004,
+    "complexity_score": 50.5,
+    "chart_type": "bar",
+    "scaling_factor": 1.2555,
+    "aspect_ratio": 1.4,
+    "complexity_details": {
+      "text_density": 100,
+      "layout_complexity": 50,
+      "element_count": 25,
+      "grid_complexity": 20,
+      "table_complexity": 0,
+      "total_score": 50.5
+    }
+  },
+  "risk_matrix": {
+    "width": 1600,
+    "height": 1200,
+    "complexity_score": 77.5,
+    "chart_type": "matrix",
+    "scaling_factor": 1.5525000000000002,
+    "aspect_ratio": 1.0,
+    "complexity_details": {
+      "text_density": 100,
+      "layout_complexity": 100,
+      "element_count": 75,
+      "grid_complexity": 50,
+      "table_complexity": 0,
+      "total_score": 77.5
+    }
+  },
+  "budget_pie": {
+    "width": 1183,
+    "height": 788,
+    "complexity_score": 26.0,
+    "chart_type": "pie",
+    "scaling_factor": 0.986,
+    "aspect_ratio": 1.0,
+    "complexity_details": {
+      "text_density": 80,
+      "layout_complexity": 0,
+      "element_count": 10,
+      "grid_complexity": 0,
+      "table_complexity": 0,
+      "total_score": 26.0
+    }
+  },
+  "organization_chart": {
+    "width": 1600,
+    "height": 1200,
+    "complexity_score": 59.0,
+    "chart_type": "organization",
+    "scaling_factor": 1.349,
+    "aspect_ratio": 0.8333333333333334,
+    "complexity_details": {
+      "text_density": 80,
+      "layout_complexity": 50,
+      "element_count": 75,
+      "grid_complexity": 50,
+      "table_complexity": 0,
+      "total_score": 59.0
+    }
+  },
+  "market_growth_trends": {
+    "width": 1600,
+    "height": 1004,
+    "complexity_score": 50.5,
+    "chart_type": "line",
+    "scaling_factor": 1.2555,
+    "aspect_ratio": 1.4,
+    "complexity_details": {
+      "text_density": 100,
+      "layout_complexity": 50,
+      "element_count": 25,
+      "grid_complexity": 20,
+      "table_complexity": 0,
+      "total_score": 50.5
+    }
+  },
+  "swot_analysis": {
+    "width": 1600,
+    "height": 1158,
+    "complexity_score": 68.0,
+    "chart_type": "matrix",
+    "scaling_factor": 1.448,
+    "aspect_ratio": 1.0,
+    "complexity_details": {
+      "text_density": 100,
+      "layout_complexity": 80,
+      "element_count": 75,
+      "grid_complexity": 20,
+      "table_complexity": 0,
+      "total_score": 68.0
+    }
+  },
+  "gantt_schedule": {
+    "width": 1427,
+    "height": 951,
+    "complexity_score": 44.5,
+    "chart_type": "matrix",
+    "scaling_factor": 1.1895,
+    "aspect_ratio": 1.0,
+    "complexity_details": {
+      "text_density": 100,
+      "layout_complexity": 50,
+      "element_count": 10,
+      "grid_complexity": 0,
+      "table_complexity": 0,
+      "total_score": 44.5
+    }
+  },
+  "system_architecture": {
+    "width": 1600,
+    "height": 1035,
+    "complexity_score": 54.0,
+    "chart_type": "default",
+    "scaling_factor": 1.294,
+    "aspect_ratio": 1.2,
+    "complexity_details": {
+      "text_density": 80,
+      "layout_complexity": 50,
+      "element_count": 50,
+      "grid_complexity": 50,
+      "table_complexity": 0,
+      "total_score": 54.0
+    }
+  }
+}

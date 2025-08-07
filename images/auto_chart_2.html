@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        .container { width: 800px; height: 400px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="chart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["레이더 탐지", "전자광학", "음향 탐지", "RF 탐지", "AI 융합"],
+                datasets: [{"label": "국내 수준", "data": [70.0, 65.0, 60.0, 80.0, 45.0], "backgroundColor": "#3498db", "borderColor": "#3498db", "borderWidth": 1}, {"label": "해외 선진국", "data": [100.0, 100.0, 100.0, 100.0, 100.0], "backgroundColor": "#e74c3c", "borderColor": "#e74c3c", "borderWidth": 1}, {"label": "정확도", "data": [85.0, 90.0, 75.0, 95.0, 98.0], "backgroundColor": "#2ecc71", "borderColor": "#2ecc71", "borderWidth": 1}]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        max: 105
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

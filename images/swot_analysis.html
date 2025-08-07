@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWOT 분석</title>
+    <style>
+        /* 고정 크기 표준 레이아웃 시스템 */
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .chart-container {
+            background: white;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        
+        .chart-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #3498db;
+            width: 100%;
+        }
+        
+        .chart-content {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .swot-matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 3px;
+            height: 400px;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border: 3px solid #2c3e50;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .swot-quadrant {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .strengths {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+        .weaknesses {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        .opportunities {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        .threats {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+        .quadrant-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+        .quadrant-content {
+            flex: 1;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .quadrant-content ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .quadrant-content li {
+            margin-bottom: 6px;
+            list-style-type: none;
+            position: relative;
+        }
+        .quadrant-content li:before {
+            content: "▶";
+            position: absolute;
+            left: -15px;
+            color: rgba(255,255,255,0.8);
+        }
+        .strategy-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+            width: 100%;
+            max-width: 900px;
+        }
+        .strategy-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .strategy-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+        .so-strategy { border-left-color: #2ecc71; }
+        .wo-strategy { border-left-color: #e74c3c; }
+        .st-strategy { border-left-color: #3498db; }
+        .wt-strategy { border-left-color: #f39c12; }
+        .strategy-label {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+        .strategy-text {
+            font-size: 11px;
+            color: #555;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">첨단 민군 혁신 지원 시스템 SWOT 분석</div>
+        <div class="chart-content">
+        
+        <div class="swot-matrix">
+            <!-- Strengths -->
+            <div class="swot-quadrant strengths">
+                <div class="quadrant-title">Strengths (강점)</div>
+                <div class="quadrant-content">
+                    <ul>
+                        <li>세계 최고 반도체 기술력 (60% 점유율)</li>
+                        <li>5G 상용화 세계 최초 달성</li>
+                        <li>조선산업 세계 1위 기술력</li>
+                        <li>K-방산 브랜드 인지도 급속 상승</li>
+                        <li>정부 강력한 정책 지원</li>
+                        <li>우수한 ICT 인프라 구축</li>
+                        <li>높은 기술개발 역량</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Weaknesses -->
+            <div class="swot-quadrant weaknesses">
+                <div class="quadrant-title">Weaknesses (약점)</div>
+                <div class="quadrant-content">
+                    <ul>
+                        <li>핵심부품 해외의존 (정밀센서 80%)</li>
+                        <li>중소기업 기술력 격차 심화</li>
+                        <li>국방R&D 민수전환률 저조 (30%)</li>
+                        <li>국제표준 대응 미흡</li>
+                        <li>글로벌 마케팅 역량 부족</li>
+                        <li>핵심기술 인력 부족</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Opportunities -->
+            <div class="swot-quadrant opportunities">
+                <div class="quadrant-title">Opportunities (기회)</div>
+                <div class="quadrant-content">
+                    <ul>
+                        <li>글로벌 방산시장 성장 (3.1% CAGR)</li>
+                        <li>아태지역 급속 성장 (4.2% CAGR)</li>
+                        <li>무인체계 시장 급성장 (2배 확대)</li>
+                        <li>신흥국 수요 급증</li>
+                        <li>민수전환 기회 확대</li>
+                        <li>4차 산업혁명 기술 융합</li>
+                        <li>국제공동개발 확대</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Threats -->
+            <div class="swot-quadrant threats">
+                <div class="quadrant-title">Threats (위협)</div>
+                <div class="quadrant-content">
+                    <ul>
+                        <li>미-중 기술패권 경쟁 심화</li>
+                        <li>수출통제 강화 (ITAR, EAR)</li>
+                        <li>경쟁국 정부지원 확대</li>
+                        <li>글로벌 공급망 재편 위험</li>
+                        <li>기술보호주의 확산</li>
+                        <li>신기술 변화 가속화</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="strategy-section">
+            <div class="strategy-title">전략 방향</div>
+            <div class="strategy-grid">
+                <div class="strategy-item so-strategy">
+                    <div class="strategy-label">SO 전략: 강점 기반 기회 활용</div>
+                    <div class="strategy-text">
+                        핵심기술 경쟁력을 바탕으로 해외진출 가속화<br>
+                        • 5G/반도체 기술 활용 무인체계 선도<br>
+                        • 아태지역 전략적 진출 확대
+                    </div>
+                </div>
+                
+                <div class="strategy-item wo-strategy">
+                    <div class="strategy-label">WO 전략: 약점 보완을 통한 기회 포착</div>
+                    <div class="strategy-text">
+                        중소기업 역량강화로 기회 활용<br>
+                        • 핵심부품 국산화 추진<br>
+                        • 민수전환 생태계 구축
+                    </div>
+                </div>
+                
+                <div class="strategy-item st-strategy">
+                    <div class="strategy-label">ST 전략: 강점 활용 위협 대응</div>
+                    <div class="strategy-text">
+                        기술주권 확보 및 표준화 선도<br>
+                        • 핵심기술 자립도 제고<br>
+                        • 국제표준 주도권 확보
+                    </div>
+                </div>
+                
+                <div class="strategy-item wt-strategy">
+                    <div class="strategy-label">WT 전략: 약점 보완 위협 최소화</div>
+                    <div class="strategy-text">
+                        공급망 다변화 및 자립도 제고<br>
+                        • 핵심부품 공급선 다변화<br>
+                        • 기술보호 체계 강화
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
+        

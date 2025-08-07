@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5대 핵심기술 TRL 기반 개발 로드맵</title>
+    <style>
+        /* 고정 크기 표준 레이아웃 시스템 */
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .chart-container {
+            background: white;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        
+        .chart-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #3498db;
+            width: 100%;
+        }
+        
+        .chart-content {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .roadmap-grid {
+            display: grid;
+            grid-template-rows: auto repeat(5, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 1100px;
+        }
+        
+        .header-row {
+            display: grid;
+            grid-template-columns: 180px repeat(9, 1fr);
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .tech-row {
+            display: grid;
+            grid-template-columns: 180px repeat(9, 1fr);
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .tech-name {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .trl-header {
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 8px 4px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 11px;
+        }
+        
+        .trl-stage {
+            padding: 8px 4px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+            min-height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .complete { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; }
+        .current { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; }
+        .planned { background: linear-gradient(135deg, #27ae60, #229954); color: white; }
+        .future { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        .long-term { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
+        .final { background: linear-gradient(135deg, #34495e, #2c3e50); color: white; }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">5대 핵심기술 TRL 기반 개발 로드맵</div>
+        <div class="chart-content">
+            <div class="roadmap-grid">
+                <!-- 헤더 -->
+                <div class="header-row">
+                    <div style="font-weight: bold; color: #2c3e50;">기술분야 / TRL단계</div>
+                    <div class="trl-header">TRL 1</div>
+                    <div class="trl-header">TRL 2</div>
+                    <div class="trl-header">TRL 3</div>
+                    <div class="trl-header">TRL 4</div>
+                    <div class="trl-header">TRL 5</div>
+                    <div class="trl-header">TRL 6</div>
+                    <div class="trl-header">TRL 7</div>
+                    <div class="trl-header">TRL 8</div>
+                    <div class="trl-header">TRL 9</div>
+                </div>
+                
+                <!-- 무인체계 기술 -->
+                <div class="tech-row">
+                    <div class="tech-name">무인체계<br>기술</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage planned">현재</div>
+                    <div class="trl-stage future">2025</div>
+                    <div class="trl-stage future">2026</div>
+                    <div class="trl-stage long-term">2028</div>
+                    <div class="trl-stage final">2030</div>
+                </div>
+                
+                <!-- AI/빅데이터 기술 -->
+                <div class="tech-row">
+                    <div class="tech-name">AI/빅데이터<br>기술</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage current">현재</div>
+                    <div class="trl-stage planned">2024</div>
+                    <div class="trl-stage future">2025</div>
+                    <div class="trl-stage future">2027</div>
+                    <div class="trl-stage long-term">2029</div>
+                    <div class="trl-stage final">2030</div>
+                </div>
+                
+                <!-- 통신기술 -->
+                <div class="tech-row">
+                    <div class="tech-name">통신기술</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage planned">현재</div>
+                    <div class="trl-stage future">2025</div>
+                    <div class="trl-stage long-term">2027</div>
+                    <div class="trl-stage final">2030</div>
+                </div>
+                
+                <!-- 센서/반도체 기술 -->
+                <div class="tech-row">
+                    <div class="tech-name">센서/반도체<br>기술</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage current">현재</div>
+                    <div class="trl-stage current">2024</div>
+                    <div class="trl-stage planned">2025</div>
+                    <div class="trl-stage future">2026</div>
+                    <div class="trl-stage future">2028</div>
+                    <div class="trl-stage long-term">2029</div>
+                    <div class="trl-stage final">2030</div>
+                </div>
+                
+                <!-- 신소재/에너지 -->
+                <div class="tech-row">
+                    <div class="tech-name">신소재/에너지</div>
+                    <div class="trl-stage complete">완료</div>
+                    <div class="trl-stage current">현재</div>
+                    <div class="trl-stage current">2024</div>
+                    <div class="trl-stage current">2025</div>
+                    <div class="trl-stage planned">2026</div>
+                    <div class="trl-stage future">2027</div>
+                    <div class="trl-stage future">2028</div>
+                    <div class="trl-stage long-term">2029</div>
+                    <div class="trl-stage final">2030</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

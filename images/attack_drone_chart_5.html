@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>투자 재원 조달 계획</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
+    
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {"labels": ["정부 지원", "기업 투자", "기타"], "datasets": [{"label": "금액 (억원)", "data": [200, 120, 30], "backgroundColor": ["#3498db", "#e74c3c", "#2ecc71"]}]},
+            options: {"responsive": true, "scales": {"y": {"beginAtZero": true, "max": 220}}}
+        });
+    </script>
+</body>
+</html>

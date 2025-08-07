@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        .container { width: 800px; height: 400px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="chart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["2019", "2020", "2021", "2022", "2023"],
+                datasets: [{"label": "연도", "data": [2019.0, 2020.0, 2021.0, 2022.0, 2023.0], "borderColor": "#3498db", "backgroundColor": "#3498db20", "tension": 0.3}, {"label": "공격 사건 (건)", "data": [15.0, 28.0, 42.0, 67.0, 95.0], "borderColor": "#e74c3c", "backgroundColor": "#e74c3c20", "tension": 0.3}]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        max: 2300
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

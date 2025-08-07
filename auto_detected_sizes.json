@@ -1,0 +1,32 @@
+{
+  "market_growth_line": {
+    "width": 800,
+    "height": 600,
+    "method": "fallback"
+  },
+  "budget_pie": {
+    "width": 800,
+    "height": 600,
+    "method": "fallback"
+  },
+  "trl_roadmap": {
+    "width": 800,
+    "height": 600,
+    "method": "fallback"
+  },
+  "system_architecture": {
+    "width": 800,
+    "height": 600,
+    "method": "fallback"
+  },
+  "swot_analysis": {
+    "width": 800,
+    "height": 600,
+    "method": "fallback"
+  },
+  "risk_matrix": {
+    "width": 800,
+    "height": 600,
+    "method": "fallback"
+  }
+}

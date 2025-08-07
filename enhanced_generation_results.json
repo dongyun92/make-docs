@@ -1,0 +1,58 @@
+{
+  "trl_roadmap": {
+    "success": true,
+    "file": "images/trl_roadmap.png",
+    "size": "1460x680",
+    "file_size": 137008,
+    "method": "trl_roadmap_analysis"
+  },
+  "swot_analysis": {
+    "success": true,
+    "file": "images/swot_analysis.png",
+    "size": "680x780",
+    "file_size": 142340,
+    "method": "swot_analysis"
+  },
+  "risk_matrix": {
+    "success": true,
+    "file": "images/risk_matrix.png",
+    "size": "520x520",
+    "file_size": 21420,
+    "method": "risk_matrix_analysis"
+  },
+  "system_architecture": {
+    "success": true,
+    "file": "images/system_architecture.png",
+    "size": "1080x680",
+    "file_size": 121755,
+    "method": "system_architecture_analysis"
+  },
+  "market_growth_line": {
+    "success": true,
+    "file": "images/market_growth_line.png",
+    "size": "1280x980",
+    "file_size": 31838,
+    "method": "generic_analysis"
+  },
+  "market_growth_regional": {
+    "success": true,
+    "file": "images/market_growth_regional.png",
+    "size": "1280x980",
+    "file_size": 24409,
+    "method": "generic_analysis"
+  },
+  "budget_pie": {
+    "success": true,
+    "file": "images/budget_pie.png",
+    "size": "1280x980",
+    "file_size": 31928,
+    "method": "generic_analysis"
+  },
+  "budget_trend": {
+    "success": true,
+    "file": "images/budget_trend.png",
+    "size": "1280x980",
+    "file_size": 38847,
+    "method": "generic_analysis"
+  }
+}

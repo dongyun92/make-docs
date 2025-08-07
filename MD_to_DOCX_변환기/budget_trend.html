@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연도별 투자 규모 추이</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: white;
+        }
+        .container {
+            background: white;
+            padding: 15px;
+            width: 650px;
+            height: 450px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="trendChart"></canvas>
+    </div>
+
+    <script>
+        // 연도별 투자 추이 차트
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                datasets: [
+                    {
+                        label: '총 투자액',
+                        data: [230, 420, 580, 700, 580, 470, 520],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        pointBackgroundColor: '#e74c3c',
+                        pointBorderWidth: 3,
+                        pointRadius: 6,
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '정부 예산',
+                        data: [100, 180, 250, 300, 250, 200, 220],
+                        borderColor: '#3498db',
+                        borderDash: [5, 5],
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        pointBackgroundColor: '#3498db',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        tension: 0.4
+                    },
+                    {
+                        label: '민간 투자',
+                        data: [130, 240, 330, 400, 330, 270, 300],
+                        borderColor: '#27ae60',
+                        borderDash: [2, 2],
+                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                        pointBackgroundColor: '#27ae60',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            usePointStyle: true
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 750,
+                        title: {
+                            display: true,
+                            text: '투자액 (억원)',
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '연도',
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+        

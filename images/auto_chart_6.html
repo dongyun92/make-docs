@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        .container { width: 800px; height: 400px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="chart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["소형드론 탐지율", "공격 차단 성공률", "거짓 경보율", "대응 시간"],
+                datasets: [{"label": "현재 수준", "data": [60.0, 40.0, 25.0, 60.0], "backgroundColor": "#3498db", "borderColor": "#3498db", "borderWidth": 1}, {"label": "목표 수준", "data": [95.0, 90.0, 5.0, 5.0], "backgroundColor": "#e74c3c", "borderColor": "#e74c3c", "borderWidth": 1}]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        max: 105
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

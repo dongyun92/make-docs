@@ -1,0 +1,56 @@
+{
+  "organization_chart": {
+    "width": 1080,
+    "height": 640,
+    "method": "org_chart_analysis",
+    "details": "5개 레벨, 13개 박스"
+  },
+  "trl_roadmap": {
+    "width": 1460,
+    "height": 680,
+    "method": "trl_roadmap_analysis",
+    "details": "9개 TRL 단계, 5개 기술 트랙"
+  },
+  "swot_analysis": {
+    "width": 680,
+    "height": 780,
+    "method": "swot_analysis",
+    "details": "8개 SWOT 섹션, 텍스트 3249자"
+  },
+  "risk_matrix": {
+    "width": 520,
+    "height": 520,
+    "method": "risk_matrix_analysis",
+    "details": "3x3 매트릭스, 20개 리스크"
+  },
+  "system_architecture": {
+    "width": 1080,
+    "height": 680,
+    "method": "system_architecture_analysis",
+    "details": "3x3 그리드, 12개 컴포넌트"
+  },
+  "market_growth_line": {
+    "width": 1280,
+    "height": 980,
+    "method": "generic_analysis",
+    "details": "일반 차트"
+  },
+  "market_growth_regional": {
+    "width": 1280,
+    "height": 980,
+    "method": "generic_analysis",
+    "details": "일반 차트"
+  },
+  "budget_pie": {
+    "width": 1280,
+    "height": 980,
+    "method": "generic_analysis",
+    "details": "일반 차트"
+  },
+  "budget_trend": {
+    "width": 1280,
+    "height": 980,
+    "method": "generic_analysis",
+    "details": "일반 차트"
+  }
+}

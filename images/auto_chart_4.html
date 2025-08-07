@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        .container { width: 800px; height: 400px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="chart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["센서 개발", "무력화 장비", "AI/SW 개발", "통합 시스템", "시험 평가", "**합계**"],
+                datasets: [{"label": "투자액(억원)", "data": [120.0, 100.0, 80.0, 30.0, 20.0, 350.0], "backgroundColor": "#3498db", "borderColor": "#3498db", "borderWidth": 1}, {"label": "비율(%)", "data": [34.3, 28.6, 22.9, 8.6, 5.7, 100.0], "backgroundColor": "#e74c3c", "borderColor": "#e74c3c", "borderWidth": 1}]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        max: 400
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분야별 투자 배분</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            width: 500px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        canvas {
+            max-width: 400px !important;
+            max-height: 400px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">총 투자 3,500억원 분야별 배분</div>
+        <canvas id="distributionChart"></canvas>
+    </div>
+
+    <script>
+        // 분야별 투자 배분 차트
+        const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+            type: 'pie',
+            data: {
+                labels: ['무인체계', 'AI/빅데이터', '통신기술', '센서/반도체', '기타 신기술'],
+                datasets: [{
+                    data: [1050, 700, 875, 525, 350],
+                    backgroundColor: [
+                        '#2c3e50',  // 다크 네이비 - 무인체계
+                        '#34495e',  // 다크 그레이 - AI/빅데이터  
+                        '#3498db',  // 블루 - 통신기술
+                        '#e74c3c',  // 레드 - 센서/반도체
+                        '#f39c12'   // 오렌지 - 기타 신기술
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#fff',
+                    hoverBorderWidth: 5,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: { size: 12 },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    return data.labels.map((label, i) => {
+                                        const value = data.datasets[0].data[i];
+                                        const percentage = ((value / data.datasets[0].data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                                        return {
+                                            text: `${label} (${value}억원, ${percentage}%)`,
+                                            fillStyle: data.datasets[0].backgroundColor[i],
+                                            index: i
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((sum, value) => sum + value, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.parsed}억원 (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+        

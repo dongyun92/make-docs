@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글로벌 방산시장 지역별 성장 전망</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: white;
+        }
+        .container {
+            background: white;
+            padding: 15px;
+            width: 650px;
+            height: 450px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="regionalChart"></canvas>
+    </div>
+
+    <script>
+        // 지역별 시장 성장 차트 (막대 차트 2개)
+        const regionalCtx = document.getElementById('regionalChart').getContext('2d');
+        new Chart(regionalCtx, {
+            type: 'bar',
+            data: {
+                labels: ['아시아태평양', '유럽', '북미', '중동', '기타'],
+                datasets: [{
+                    label: '시장 규모 (억 달러)',
+                    data: [1280, 1150, 2100, 920, 450],
+                    backgroundColor: '#3498db',
+                    borderColor: '#2980b9',
+                    borderWidth: 1,
+                    yAxisID: 'y'
+                }, {
+                    label: '성장률 (%)',
+                    data: [4.2, 3.8, 2.9, 3.5, 2.1],
+                    backgroundColor: '#e74c3c',
+                    borderColor: '#c0392b',
+                    borderWidth: 1,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            padding: 15,
+                            font: { size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.datasetIndex === 0) {
+                                    return context.dataset.label + ': ' + context.parsed.y + '억 달러';
+                                } else {
+                                    return context.dataset.label + ': ' + context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        beginAtZero: true,
+                        max: 1500,
+                        title: {
+                            display: true,
+                            text: '시장 규모 (억 달러)',
+                            font: { size: 12, weight: '600' },
+                            color: '#333'
+                        },
+                        ticks: {
+                            font: { size: 11 },
+                            color: '#666'
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)',
+                            lineWidth: 0.5
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        beginAtZero: true,
+                        max: 3,
+                        title: {
+                            display: true,
+                            text: '성장률 (%)',
+                            font: { size: 12, weight: '600' },
+                            color: '#333'
+                        },
+                        ticks: {
+                            font: { size: 11 },
+                            color: '#666'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '지역',
+                            font: { size: 12, weight: '600' },
+                            color: '#333'
+                        },
+                        ticks: {
+                            font: { size: 11 },
+                            color: '#666'
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)',
+                            lineWidth: 0.5
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

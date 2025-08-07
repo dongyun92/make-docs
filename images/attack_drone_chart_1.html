@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>연도별 공격드론 위협 증가 추이</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
+    
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {"labels": ["2019", "2020", "2021", "2022", "2023"], "datasets": [{"label": "공격 사건 (건)", "data": [15, 28, 42, 67, 95], "borderColor": "#e74c3c", "backgroundColor": "#e74c3c22", "tension": 0.1}]},
+            options: {"responsive": true, "scales": {"y": {"beginAtZero": true, "max": 105}}}
+        });
+    </script>
+</body>
+</html>

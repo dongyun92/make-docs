@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        .container { width: 800px; height: 400px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="chart"></canvas>
+    </div>
+    <script>
+        const ctx = document.getElementById('chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["2024", "2025", "2026", "2027", "2028"],
+                datasets: [{"label": "연도", "data": [2024.0, 2025.0, 2026.0, 2027.0, 2028.0], "borderColor": "#3498db", "backgroundColor": "#3498db20", "tension": 0.3}, {"label": "투자액(억원)", "data": [50.0, 80.0, 90.0, 80.0, 50.0], "borderColor": "#e74c3c", "backgroundColor": "#e74c3c20", "tension": 0.3}, {"label": "누적(억원)", "data": [50.0, 130.0, 220.0, 300.0, 350.0], "borderColor": "#2ecc71", "backgroundColor": "#2ecc7120", "tension": 0.3}]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        max: 2300
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

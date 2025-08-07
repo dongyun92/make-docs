@@ -1,0 +1,34 @@
+{
+  "market_growth_line": {
+    "width": 900,
+    "height": 600
+  },
+  "market_growth_regional": {
+    "width": 900,
+    "height": 600
+  },
+  "budget_pie": {
+    "width": 700,
+    "height": 700
+  },
+  "budget_trend": {
+    "width": 900,
+    "height": 600
+  },
+  "trl_roadmap": {
+    "width": 1400,
+    "height": 650
+  },
+  "system_architecture": {
+    "width": 1000,
+    "height": 650
+  },
+  "swot_analysis": {
+    "width": 800,
+    "height": 900
+  },
+  "risk_matrix": {
+    "width": 600,
+    "height": 650
+  }
+}

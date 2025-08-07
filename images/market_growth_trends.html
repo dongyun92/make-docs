@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국 방산 수출 성장 추이</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: auto;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            width: 100%;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+        .chart-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .chart-box {
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        canvas {
+            max-height: 280px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">한국 방산 수출 성장 추이 및 전망</div>
+        
+        <div class="chart-container">
+            <div class="chart-box">
+                <div class="chart-title">방산 수출 성장 추이 (억 달러)</div>
+                <canvas id="growthChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title">글로벌 방산시장 지역별 성장 전망 (2030)</div>
+                <canvas id="regionalChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 방산 수출 성장 추이 차트
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['2019', '2021', '2023', '2024 목표', '2025', '2027', '2030'],
+                datasets: [
+                    {
+                        label: '실적',
+                        data: [45, 93, 140, null, null, null, null],
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        pointBackgroundColor: '#3498db',
+                        pointBorderWidth: 3,
+                        pointRadius: 6,
+                        tension: 0.4
+                    },
+                    {
+                        label: '2024 목표',
+                        data: [null, null, null, 200, null, null, null],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'transparent',
+                        pointBackgroundColor: '#e74c3c',
+                        pointBorderWidth: 3,
+                        pointRadius: 8,
+                        pointStyle: 'star'
+                    },
+                    {
+                        label: '최적 시나리오',
+                        data: [null, null, null, null, 180, 220, 250],
+                        borderColor: '#27ae60',
+                        borderDash: [5, 5],
+                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                        pointBackgroundColor: '#27ae60',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        tension: 0.4
+                    },
+                    {
+                        label: '기준 시나리오',
+                        data: [null, null, null, null, 170, 200, 220],
+                        borderColor: '#f39c12',
+                        backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                        pointBackgroundColor: '#f39c12',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        tension: 0.4
+                    },
+                    {
+                        label: '보수 시나리오',
+                        data: [null, null, null, null, 160, 180, 180],
+                        borderColor: '#e67e22',
+                        borderDash: [2, 2],
+                        backgroundColor: 'rgba(230, 126, 34, 0.1)',
+                        pointBackgroundColor: '#e67e22',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            usePointStyle: true
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 280,
+                        title: {
+                            display: true,
+                            text: '수출액 (억 달러)',
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '연도',
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 지역별 시장 성장 차트
+        const regionalCtx = document.getElementById('regionalChart').getContext('2d');
+        new Chart(regionalCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['아시아태평양 (4.2%)', '유럽 (3.8%)', '북미 (2.9%)', '중동 (3.5%)', '기타 (2.1%)'],
+                datasets: [{
+                    data: [1280, 1150, 2100, 920, 450],
+                    backgroundColor: [
+                        '#2c3e50',  // 다크 네이비 - 아시아태평양
+                        '#34495e',  // 다크 그레이 - 유럽
+                        '#3498db',  // 블루 - 북미
+                        '#e74c3c',  // 레드 - 중동
+                        '#f39c12'   // 오렌지 - 기타
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#fff',
+                    hoverBorderWidth: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: { size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '억 달러';
+                            }
+                        }
+                    }
+                },
+                backgroundColor: '#f5f5f5'
+            }
+        });
+    </script>
+</body>
+</html>
+        

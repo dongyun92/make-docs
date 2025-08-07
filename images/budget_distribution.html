@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투자 배분 및 추이</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: auto;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            width: 100%;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+        .chart-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .chart-box {
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        canvas {
+            max-height: 280px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">총 투자 3,500억원 분야별 배분 및 연도별 추이</div>
+        
+        <div class="chart-container">
+            <div class="chart-box">
+                <div class="chart-title">분야별 투자 배분</div>
+                <canvas id="distributionChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title">연도별 투자 규모 추이</div>
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 분야별 투자 배분 차트
+        const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+            type: 'pie',
+            data: {
+                labels: ['무인체계', 'AI/빅데이터', '통신기술', '센서/반도체', '기타 신기술'],
+                datasets: [{
+                    data: [1050, 700, 875, 525, 350],
+                    backgroundColor: [
+                        '#2c3e50',  // 다크 네이비 - 무인체계
+                        '#34495e',  // 다크 그레이 - AI/빅데이터  
+                        '#3498db',  // 블루 - 통신기술
+                        '#e74c3c',  // 레드 - 센서/반도체
+                        '#f39c12'   // 오렌지 - 기타 신기술
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#fff',
+                    hoverBorderWidth: 5,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: { size: 12 },
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    return data.labels.map((label, i) => {
+                                        const value = data.datasets[0].data[i];
+                                        const percentage = ((value / data.datasets[0].data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                                        return {
+                                            text: `${label} (${value}억원, ${percentage}%)`,
+                                            fillStyle: data.datasets[0].backgroundColor[i],
+                                            index: i
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((sum, value) => sum + value, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return `${context.label}: ${context.parsed}억원 (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 연도별 투자 추이 차트
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                datasets: [
+                    {
+                        label: '총 투자액',
+                        data: [230, 420, 580, 700, 580, 470, 520],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        pointBackgroundColor: '#e74c3c',
+                        pointBorderWidth: 3,
+                        pointRadius: 6,
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '정부 예산',
+                        data: [100, 180, 250, 300, 250, 200, 220],
+                        borderColor: '#3498db',
+                        borderDash: [5, 5],
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        pointBackgroundColor: '#3498db',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        tension: 0.4
+                    },
+                    {
+                        label: '민간 투자',
+                        data: [130, 240, 330, 400, 330, 270, 300],
+                        borderColor: '#27ae60',
+                        borderDash: [2, 2],
+                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                        pointBackgroundColor: '#27ae60',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            usePointStyle: true
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 750,
+                        title: {
+                            display: true,
+                            text: '투자액 (억원)',
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '연도',
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+        
