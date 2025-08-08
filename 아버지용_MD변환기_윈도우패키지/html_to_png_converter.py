@@ -10,11 +10,8 @@ import subprocess
 import time
 
 class HTMLToPNGConverter:
-    def __init__(self, output_dir=None):
-        if output_dir is None:
-            self.output_dir = os.path.join(os.getcwd(), "converted_images")
-        else:
-            self.output_dir = output_dir
+    def __init__(self):
+        self.output_dir = "/Users/dykim/dev/make-docs/converted_images"
         os.makedirs(self.output_dir, exist_ok=True)
         print(f"📁 이미지 저장 디렉토리: {self.output_dir}")
         
@@ -60,33 +57,34 @@ class HTMLToPNGConverter:
             print(f"❌ 오류 발생 {os.path.basename(html_file_path)}: {e}")
             return None
     
-    def convert_selected_files(self, html_files):
-        """선택된 HTML 파일들을 PNG로 변환"""
+    def convert_rwsl_charts(self):
+        """RWSL HTML 차트들을 모두 PNG로 변환"""
         
-        if not html_files:
-            print("⚠️ 변환할 HTML 파일이 없습니다.")
-            return 0
-            
-        print(f"🎯 변환할 HTML 파일: {len(html_files)}개")
+        # RWSL HTML 파일들 찾기
+        all_html_files = glob.glob('/Users/dykim/dev/make-docs/images/*.html')
+        rwsl_files = [f for f in all_html_files if 'rwsl' in os.path.basename(f).lower()]
+        
+        # 추출기 파일은 제외
+        rwsl_files = [f for f in rwsl_files if 'extractor' not in os.path.basename(f).lower()]
+        
+        print(f"🎯 RWSL 차트 파일 발견: {len(rwsl_files)}개")
         
         converted_count = 0
         failed_files = []
         
-        for i, html_file in enumerate(html_files, 1):
-            print(f"\n[{i}/{len(html_files)}]")
+        for i, html_file in enumerate(rwsl_files, 1):
+            print(f"\n[{i}/{len(rwsl_files)}]")
             
             result = self.convert_html_to_png(html_file)
             if result:
                 converted_count += 1
-                # PNG 파일을 HTML 파일과 같은 디렉토리의 images 폴더로 복사
-                self.copy_png_to_source_directory(result, html_file)
             else:
                 failed_files.append(os.path.basename(html_file))
             
             # 각 파일 변환 후 잠시 대기
-            time.sleep(0.5)
+            time.sleep(1)
         
-        print(f"\n🎉 HTML 차트 변환 완료!")
+        print(f"\n🎉 RWSL 차트 변환 완료!")
         print(f"✅ 성공: {converted_count}개")
         print(f"❌ 실패: {len(failed_files)}개")
         
@@ -95,27 +93,11 @@ class HTMLToPNGConverter:
             for failed in failed_files:
                 print(f"  - {failed}")
         
+        # 변환된 파일을 images 폴더로 복사
+        if converted_count > 0:
+            self.copy_to_images_folder()
+        
         return converted_count
-    
-    def copy_png_to_source_directory(self, png_path, html_file):
-        """PNG 파일을 HTML 파일과 같은 디렉토리의 images 폴더로 복사"""
-        try:
-            # HTML 파일이 있는 디렉토리
-            html_dir = os.path.dirname(html_file)
-            images_dir = os.path.join(html_dir, "images")
-            os.makedirs(images_dir, exist_ok=True)
-            
-            # PNG 파일명
-            png_filename = os.path.basename(png_path)
-            destination = os.path.join(images_dir, png_filename)
-            
-            # 파일 복사
-            import shutil
-            shutil.copy2(png_path, destination)
-            print(f"📁 복사 완료: {png_filename} → {images_dir}")
-            
-        except Exception as e:
-            print(f"❌ 복사 실패 {os.path.basename(png_path)}: {e}")
     
     def copy_to_images_folder(self):
         """변환된 파일들을 images 폴더로 복사"""

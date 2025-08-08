@@ -1,0 +1,39 @@
+==========================================
+    윈도우 한글 폰트 문제 완전 해결
+==========================================
+
+🎯 **문제 상황**
+- 맥에서 만든 워드파일이 윈도우에서 글자가 깨짐
+- 한글이 제대로 표시되지 않는 문제
+
+✅ **해결 방법**
+1. **문서 기본 폰트 설정 추가**
+   - Normal 스타일에 윈도우 호환 폰트 설정
+   - 한글: Malgun Gothic (맑은 고딕)
+   - 영문: Arial
+
+2. **XML 레벨 폰트 설정**
+   - w:ascii (영문): Arial
+   - w:eastAsia (한글/중문/일문): Malgun Gothic  
+   - w:hAnsi (서구문자): Arial
+   - w:cs (복합스크립트): Malgun Gothic
+
+3. **폰트 설정 함수 개선**
+   - set_korean_font(): run 객체용
+   - set_korean_font_for_style(): style 객체용
+   - _set_document_default_font(): 문서 전체 기본 폰트
+
+📦 **수정된 파일**
+- md_to_docx_converter.py: 폰트 처리 로직 대폭 개선
+
+🚀 **사용법**
+1. business_plan_generator_fixed_fonts.zip 압축해제
+2. 기존과 동일: setup_final.bat → start_program.bat
+3. 이제 윈도우에서도 한글이 정상적으로 표시됩니다!
+
+⚡ **기술적 개선 사항**
+- 운영체제별 폰트 호환성 확보
+- XML 직접 조작으로 세밀한 폰트 제어
+- 오류 발생시 폴백 메커니즘 제공
+
+🎉 **이제 윈도우에서도 완벽하게 작동합니다!**

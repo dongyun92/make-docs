@@ -44,9 +44,6 @@ class UniversalMDConverter:
         """메인 변환 함수"""
         print(f"🔄 변환 시작: {md_file}")
         
-        # MD 파일의 디렉토리 저장 (이미지 경로 처리용)
-        self.md_file_dir = os.path.dirname(os.path.abspath(md_file))
-        
         with open(md_file, 'r', encoding='utf-8') as f:
             content = f.read()
             
@@ -140,11 +137,11 @@ class UniversalMDConverter:
                     
             i += 1
             
-        # DOCX 저장 - MD 파일과 같은 디렉토리에
+        # DOCX 저장
         import time
         timestamp = int(time.time())
-        output_filename = os.path.basename(md_file).replace('.md', f'_TEST_{timestamp}.docx')
-        output_file = os.path.join(self.md_file_dir, output_filename)
+        output_file = f"output/{os.path.basename(md_file).replace('.md', f'_TEST_{timestamp}.docx')}"
+        os.makedirs('output', exist_ok=True)
         self.document.save(output_file)
         
         print(f"✅ 변환 완료: {output_file}")
@@ -190,9 +187,10 @@ class UniversalMDConverter:
             alt_text = match.group(1)
             image_path = match.group(2)
             
-            # 절대 경로로 변환 - MD 파일의 디렉토리를 기준으로
+            # 절대 경로로 변환
             if not os.path.isabs(image_path):
-                full_path = os.path.join(self.md_file_dir, image_path)
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                full_path = os.path.join(current_dir, image_path)
             else:
                 full_path = image_path
                 
@@ -278,15 +276,6 @@ class UniversalMDConverter:
                     run.font.bold = True
                     run.font.name = 'Arial'
                     run.font.size = Pt(10)
-                
-                # 헤더 셀 배경색 설정 (연한 회색)
-                from docx.oxml.shared import qn
-                from docx.oxml import parse_xml
-                cell = header_row.cells[j]
-                cell_properties = cell._tc.get_or_add_tcPr()
-                shade_element = parse_xml(r'<w:shd {} w:fill="F0F0F0"/>'.format(
-                    'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'))
-                cell_properties.append(shade_element)
                     
         # 데이터 행들 추가  
         for line in table_lines[1:]:

@@ -29,6 +29,11 @@ class MDToDOCXConverter:
         # 변수 초기화
         self.selected_md_file = tk.StringVar()
         self.selected_html_files = []  # HTML 파일 리스트
+        self.output_directory = tk.StringVar()
+        self.output_filename = tk.StringVar()
+        
+        # 기본값 설정
+        self.output_directory.set(str(Path.cwd()))
         
         self.setup_ui()
         
@@ -112,10 +117,33 @@ class MDToDOCXConverter:
         
         html_frame.columnconfigure(0, weight=1)
         
+        # 출력 설정 섹션
+        output_frame = ttk.LabelFrame(main_frame, text="출력 설정", padding="10")
+        output_frame.grid(row=2, column=0, columnspan=3, sticky=(tk.W, tk.E), pady=(0, 15))
+        
+        ttk.Label(output_frame, text="출력 폴더:").grid(row=0, column=0, sticky=tk.W, pady=(0, 5))
+        
+        dir_frame = ttk.Frame(output_frame)
+        dir_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        
+        self.dir_entry = ttk.Entry(dir_frame, textvariable=self.output_directory, width=50)
+        self.dir_entry.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=(0, 10))
+        
+        ttk.Button(dir_frame, text="찾아보기", 
+                  command=self.browse_output_dir).grid(row=0, column=1)
+        
+        dir_frame.columnconfigure(0, weight=1)
+        
+        ttk.Label(output_frame, text="파일명 (선택사항):").grid(row=2, column=0, sticky=tk.W, pady=(10, 5))
+        self.filename_entry = ttk.Entry(output_frame, textvariable=self.output_filename, width=50)
+        self.filename_entry.grid(row=3, column=0, sticky=(tk.W, tk.E), pady=(0, 5))
+        
+        ttk.Label(output_frame, text="※ 비워두면 원본 파일명으로 자동 생성됩니다", 
+                 font=('Arial', 8), foreground='gray').grid(row=4, column=0, sticky=tk.W)
         
         # 상태 섹션
         status_frame = ttk.LabelFrame(main_frame, text="상태", padding="10")
-        status_frame.grid(row=2, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 15))
+        status_frame.grid(row=3, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 15))
         
         self.status_text = tk.Text(status_frame, height=8, width=70, wrap=tk.WORD)
         scrollbar = ttk.Scrollbar(status_frame, orient="vertical", command=self.status_text.yview)
@@ -129,7 +157,7 @@ class MDToDOCXConverter:
         
         # 버튼 섹션
         button_frame = ttk.Frame(main_frame)
-        button_frame.grid(row=3, column=0, columnspan=3, pady=10)
+        button_frame.grid(row=4, column=0, columnspan=3, pady=10)
         
         self.convert_btn = ttk.Button(button_frame, text="변환 시작", 
                                      command=self.start_conversion, 
@@ -167,6 +195,9 @@ class MDToDOCXConverter:
         if file_path:
             self.selected_md_file.set(file_path)
             
+            # 출력 파일명 자동 설정
+            base_name = Path(file_path).stem
+            self.output_filename.set(f"{base_name}.docx")
             
             self.log_message(f"선택된 파일: {file_path}")
     
@@ -220,6 +251,13 @@ class MDToDOCXConverter:
         count = len(self.selected_html_files)
         self.html_count_label.config(text=f"선택된 파일: {count}개")
     
+    def browse_output_dir(self):
+        """출력 폴더 선택"""
+        directory = filedialog.askdirectory(title="출력 폴더 선택")
+        if directory:
+            self.output_directory.set(directory)
+            self.log_message(f"출력 폴더: {directory}")
+    
     def log_message(self, message):
         """로그 메시지 추가"""
         self.status_text.insert(tk.END, f"{message}\n")
@@ -240,6 +278,13 @@ class MDToDOCXConverter:
             messagebox.showerror("오류", "선택된 Markdown 파일이 존재하지 않습니다.")
             return False
         
+        if not self.output_directory.get():
+            messagebox.showerror("오류", "출력 폴더를 선택해주세요.")
+            return False
+        
+        if not os.path.exists(self.output_directory.get()):
+            messagebox.showerror("오류", "출력 폴더가 존재하지 않습니다.")
+            return False
         
         return True
     
@@ -323,16 +368,11 @@ class MDToDOCXConverter:
         self.log_message(f"html_to_png_converter로 HTML 파일 {len(self.selected_html_files)}개를 PNG로 변환합니다...")
         
         try:
-            # 선택된 HTML 파일들이 있는 경우에만 변환
-            if not self.selected_html_files:
-                self.log_message("ℹ️ 선택된 HTML 파일이 없어 변환을 건너뜁니다.")
-                return
-                
             # html_to_png_converter 임포트 및 실행
             from html_to_png_converter import HTMLToPNGConverter
             
             converter = HTMLToPNGConverter()
-            converted_count = converter.convert_selected_files(self.selected_html_files)
+            converted_count = converter.convert_rwsl_charts()
             
             self.log_message(f"✅ {converted_count}개 HTML 파일 변환 완료!")
             
@@ -394,6 +434,15 @@ class MDToDOCXConverter:
             if not self.check_dependencies():
                 return
                 
+            # 출력 파일 경로 생성
+            if self.output_filename.get():
+                output_file = os.path.join(self.output_directory.get(), self.output_filename.get())
+            else:
+                base_name = Path(self.selected_md_file.get()).stem
+                output_file = os.path.join(self.output_directory.get(), f"{base_name}.docx")
+            
+            self.log_message(f"출력 파일: {output_file}")
+            
             # HTML 파일들 캡처 (선택사항)
             if self.selected_html_files:
                 self.capture_html_files()
@@ -402,19 +451,20 @@ class MDToDOCXConverter:
             from universal_md_converter import UniversalMDConverter
             converter = UniversalMDConverter()
             
-            # MD 파일 변환 (MD 파일과 같은 위치에 자동 저장)
+            # HTML 파일이 있든 없든 MD 파일 그대로 처리 (재배치 안함)
             generated_path = converter.convert(self.selected_md_file.get())
             if generated_path and os.path.exists(generated_path):
+                import shutil
+                shutil.move(generated_path, output_file)
                 success = True
-                self.log_message(f"✅ 변환 완료: {generated_path}")
-                print(f"✅ MD 파일 구조 그대로 변환 완료: {generated_path}")
+                print(f"✅ MD 파일 구조 그대로 변환 완료: {output_file}")
             else:
                 success = False
                 print(f"❌ 변환 실패: 파일이 생성되지 않았습니다")
             
             if success:
                 self.log_message("✅ 문서 변환이 완료되었습니다!")
-                messagebox.showinfo("완료", f"변환이 완료되었습니다!\n\n출력 파일: {generated_path}")
+                messagebox.showinfo("완료", f"변환이 완료되었습니다!\n\n출력 파일: {output_file}")
             else:
                 self.log_message("❌ 문서 변환 중 오류가 발생했습니다.")
                 messagebox.showerror("오류", "변환 중 오류가 발생했습니다.")
