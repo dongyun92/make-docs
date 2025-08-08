@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국내 항공사고 유형별 발생 현황</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            width: 900px;
+            height: 560px;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: white;
+            box-sizing: border-box;
+        }
+        .chart-container {
+            height: 480px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .stats-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 11px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+    </style>
+
+    <!-- html2canvas 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- 자동 이미지 추출 스크립트 -->
+    <script>
+        window.addEventListener('load', function() {
+            // 페이지 로드 후 1초 대기 (차트 렌더링 완료 대기)
+            setTimeout(function() {
+                // 전체 body를 캡처
+                html2canvas(document.body, {
+                    useCORS: true,
+                    allowTaint: true,
+                    scale: 1,
+                    backgroundColor: '#ffffff',
+                    width: 900,
+                    height: 560
+                }).then(function(canvas) {
+                    // 이미지로 변환
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // 다운로드 링크 생성
+                    const fileName = window.location.pathname.split('/').pop().replace('.html', '.png');
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imgData;
+                    downloadLink.download = fileName;
+                    downloadLink.textContent = '이미지 다운로드';
+                    downloadLink.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: #007bff; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-family: Arial;';
+                    
+                    document.body.appendChild(downloadLink);
+                    
+                    // 자동으로 다운로드 시작 (옵션)
+                    // downloadLink.click();
+                    
+                    console.log('이미지 추출 완료. 다운로드 버튼이 우상단에 생성되었습니다.');
+                }).catch(function(error) {
+                    console.error('이미지 추출 실패:', error);
+                });
+            }, 1000);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">국내 항공사고 유형별 발생 현황</div>
+        <div class="chart-subtitle">(2019-2023, 총 65건)</div>
+        <canvas id="accidentChart" width="600" height="400"></canvas>
+        
+        <div class="stats-summary">
+            <div class="stat-item">
+                <div class="stat-number">32%</div>
+                <div class="stat-label">활주로 관련 사고</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">645억원</div>
+                <div class="stat-label">총 경제적 손실</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">29건</div>
+                <div class="stat-label">활주로 관련 사고</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('accidentChart').getContext('2d');
+        const accidentChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['활주로 침입', '이착륙 오류', '지상 충돌', '기타'],
+                datasets: [{
+                    data: [18.5, 13.8, 12.3, 55.4],
+                    backgroundColor: [
+                        '#e74c3c',  // 활주로 침입 - 빨간색 (가장 위험)
+                        '#f39c12',  // 이착륙 오류 - 주황색
+                        '#3498db',  // 지상 충돌 - 파란색
+                        '#95a5a6'   // 기타 - 회색
+                    ],
+                    borderColor: [
+                        '#c0392b',
+                        '#e67e22',
+                        '#2980b9',
+                        '#7f8c8d'
+                    ],
+                    borderWidth: 2,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            },
+                            generateLabels: function(chart) {
+                                const original = Chart.defaults.plugins.legend.labels.generateLabels;
+                                const labels = original.call(this, chart);
+                                const data = chart.data.datasets[0].data;
+                                const counts = [12, 9, 8, 36]; // 실제 건수
+                                
+                                labels.forEach((label, i) => {
+                                    label.text = `${label.text} (${data[i]}%, ${counts[i]}건)`;
+                                });
+                                return labels;
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const counts = [12, 9, 8, 36];
+                                const losses = [245, 180, 95, 125];
+                                return [
+                                    `${label}: ${value}%`,
+                                    `발생 건수: ${counts[context.dataIndex]}건`,
+                                    `경제적 손실: ${losses[context.dataIndex]}억원`
+                                ];
+                            }
+                        }
+                    }
+                },
+                cutout: '50%',
+                animation: false
+            }
+        });
+    </script>
+</body>
+</html>

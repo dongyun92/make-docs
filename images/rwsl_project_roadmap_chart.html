@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWSL 사업 추진 로드맵</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            width: 900px;
+            height: 560px;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: white;
+            box-sizing: border-box;
+        }
+        .chart-container {
+            height: 480px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .roadmap-timeline {
+            display: grid;
+            grid-template-columns: 150px repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .timeline-header {
+            background: #34495e;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .timeline-year {
+            background: #ecf0f1;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .timeline-item {
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 11px;
+            color: white;
+            font-weight: bold;
+        }
+        .phase1 { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .phase2 { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .phase3 { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .phase4 { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .empty { background: #bdc3c7; opacity: 0.3; }
+    </style>
+
+    <!-- html2canvas 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- 자동 이미지 추출 스크립트 -->
+    <script>
+        window.addEventListener('load', function() {
+            // 페이지 로드 후 1초 대기 (차트 렌더링 완료 대기)
+            setTimeout(function() {
+                // 전체 body를 캡처
+                html2canvas(document.body, {
+                    useCORS: true,
+                    allowTaint: true,
+                    scale: 1,
+                    backgroundColor: '#ffffff',
+                    width: 900,
+                    height: 560
+                }).then(function(canvas) {
+                    // 이미지로 변환
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // 다운로드 링크 생성
+                    const fileName = window.location.pathname.split('/').pop().replace('.html', '.png');
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imgData;
+                    downloadLink.download = fileName;
+                    downloadLink.textContent = '이미지 다운로드';
+                    downloadLink.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: #007bff; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-family: Arial;';
+                    
+                    document.body.appendChild(downloadLink);
+                    
+                    // 자동으로 다운로드 시작 (옵션)
+                    // downloadLink.click();
+                    
+                    console.log('이미지 추출 완료. 다운로드 버튼이 우상단에 생성되었습니다.');
+                }).catch(function(error) {
+                    console.error('이미지 추출 실패:', error);
+                });
+            }, 1000);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">RWSL 사업 추진 로드맵</div>
+        <div class="chart-subtitle">(2024-2028, 5년간 단계별 구축 계획)</div>
+        <canvas id="roadmapChart" width="1000" height="400"></canvas>
+        
+        <div class="roadmap-timeline">
+            <div class="timeline-header">구축 단계</div>
+            <div class="timeline-year">2024</div>
+            <div class="timeline-year">2025</div>
+            <div class="timeline-year">2026</div>
+            <div class="timeline-year">2027</div>
+            <div class="timeline-year">2028</div>
+            
+            <div class="timeline-header">1단계<br>인천국제공항</div>
+            <div class="timeline-item phase1">설계 및<br>착공</div>
+            <div class="timeline-item phase1">구축 완료<br>운영 개시</div>
+            <div class="timeline-item empty">-</div>
+            <div class="timeline-item empty">-</div>
+            <div class="timeline-item empty">-</div>
+            
+            <div class="timeline-header">2단계<br>김포국제공항</div>
+            <div class="timeline-item empty">-</div>
+            <div class="timeline-item phase2">설계 및<br>착공</div>
+            <div class="timeline-item phase2">구축 완료<br>운영 개시</div>
+            <div class="timeline-item empty">-</div>
+            <div class="timeline-item empty">-</div>
+            
+            <div class="timeline-header">3단계<br>김해국제공항</div>
+            <div class="timeline-item empty">-</div>
+            <div class="timeline-item empty">-</div>
+            <div class="timeline-item phase3">설계 및<br>착공</div>
+            <div class="timeline-item phase3">구축 완료<br>운영 개시</div>
+            <div class="timeline-item empty">-</div>
+            
+            <div class="timeline-header">4단계<br>제주국제공항</div>
+            <div class="timeline-item empty">-</div>
+            <div class="timeline-item empty">-</div>
+            <div class="timeline-item empty">-</div>
+            <div class="timeline-item phase4">설계 및<br>착공</div>
+            <div class="timeline-item phase4">구축 완료<br>운영 개시</div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('roadmapChart').getContext('2d');
+        const roadmapChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2024', '2025', '2026', '2027', '2028'],
+                datasets: [
+                    {
+                        label: '누적 공항 수',
+                        data: [0, 1, 2, 3, 4],
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 4,
+                        tension: 0.3,
+                        pointRadius: 8,
+                        pointHoverRadius: 10,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '누적 활주로 수',
+                        data: [0, 4, 6, 8, 10],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderWidth: 4,
+                        tension: 0.3,
+                        pointRadius: 8,
+                        pointHoverRadius: 10,
+                        yAxisID: 'y1'
+                    },
+                    {
+                        label: '연간 투자액(억원)',
+                        data: [225, 225, 280, 260, 240],
+                        type: 'bar',
+                        backgroundColor: 'rgba(46, 204, 113, 0.6)',
+                        borderColor: '#2ecc71',
+                        borderWidth: 2,
+                        yAxisID: 'y2'
+                    }
+                ]
+            },
+            options: {
+            animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            afterLabel: function(context) {
+                                const airports = ['', '인천국제', '인천+김포', '인천+김포+김해', '4개 공항 완료'];
+                                if (context.datasetIndex === 0) {
+                                    return `완료 공항: ${airports[context.parsed.y]}`;
+                                }
+                                return '';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '연도',
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '누적 공항 수',
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        },
+                        max: 5,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: '누적 활주로 수',
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        },
+                        max: 12,
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    },
+                    y2: {
+                        type: 'linear',
+                        display: false,
+                        max: 350
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
+        });
+    </script>
+</body>
+</html>

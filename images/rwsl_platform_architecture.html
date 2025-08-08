@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차세대 RWSL 통합 플랫폼 아키텍처</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            width: 900px;
+            height: 560px;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: white;
+            box-sizing: border-box;
+        }
+        .diagram-container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .architecture-diagram {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 15px;
+            height: 600px;
+            position: relative;
+        }
+        .layer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 11px;
+            padding: 8px;
+            position: relative;
+        }
+        .cloud-layer {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            grid-column: 1 / 5;
+            grid-row: 1;
+        }
+        .ai-engine {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            grid-column: 1;
+            grid-row: 2;
+        }
+        .decision-engine {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            grid-column: 2;
+            grid-row: 2;
+        }
+        .data-analytics {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            grid-column: 3;
+            grid-row: 2;
+        }
+        .integration-api {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            grid-column: 4;
+            grid-row: 2;
+        }
+        .iot-sensors {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            grid-column: 1;
+            grid-row: 3;
+        }
+        .communication {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            grid-column: 2;
+            grid-row: 3;
+        }
+        .control-system {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            grid-column: 3;
+            grid-row: 3;
+        }
+        .monitoring {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            grid-column: 4;
+            grid-row: 3;
+        }
+        .rel-lights {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            grid-column: 1;
+            grid-row: 4;
+        }
+        .thl-lights {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            grid-column: 2;
+            grid-row: 4;
+        }
+        .ril-lights {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            grid-column: 3;
+            grid-row: 4;
+        }
+        .power-backup {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            grid-column: 4;
+            grid-row: 4;
+        }
+        .physical-layer {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            grid-column: 1 / 5;
+            grid-row: 5;
+        }
+        .connection-line {
+            position: absolute;
+            background: #34495e;
+            z-index: 10;
+        }
+        .layer-label {
+            position: absolute;
+            left: -120px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            color: #2c3e50;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+    </style>
+
+    <!-- html2canvas 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- 자동 이미지 추출 스크립트 -->
+    <script>
+        window.addEventListener('load', function() {
+            // 페이지 로드 후 1초 대기 (차트 렌더링 완료 대기)
+            setTimeout(function() {
+                // 전체 body를 캡처
+                html2canvas(document.body, {
+                    useCORS: true,
+                    allowTaint: true,
+                    scale: 1,
+                    backgroundColor: '#ffffff',
+                    width: 900,
+                    height: 560
+                }).then(function(canvas) {
+                    // 이미지로 변환
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // 다운로드 링크 생성
+                    const fileName = window.location.pathname.split('/').pop().replace('.html', '.png');
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imgData;
+                    downloadLink.download = fileName;
+                    downloadLink.textContent = '이미지 다운로드';
+                    downloadLink.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: #007bff; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-family: Arial;';
+                    
+                    document.body.appendChild(downloadLink);
+                    
+                    // 자동으로 다운로드 시작 (옵션)
+                    // downloadLink.click();
+                    
+                    console.log('이미지 추출 완료. 다운로드 버튼이 우상단에 생성되었습니다.');
+                }).catch(function(error) {
+                    console.error('이미지 추출 실패:', error);
+                });
+            }, 1000);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="diagram-container">
+        <div class="chart-title">차세대 RWSL 통합 플랫폼 아키텍처</div>
+        <div class="architecture-diagram">
+            <!-- Cloud/Data Layer -->
+            <div class="layer cloud-layer">
+                <div class="layer-label">클라우드</div>
+                클라우드 데이터 처리 플랫폼<br>
+                <small>AWS/Azure 기반 실시간 데이터 분석 및 저장</small>
+            </div>
+            
+            <!-- AI/Logic Layer -->
+            <div class="layer ai-engine">
+                <div class="layer-label">AI 처리</div>
+                AI 예측 엔진<br>
+                <small>머신러닝 기반<br>사고 예방 시스템</small>
+            </div>
+            
+            <div class="layer decision-engine">
+                의사결정 엔진<br>
+                <small>실시간 판단<br>자동 제어 로직</small>
+            </div>
+            
+            <div class="layer data-analytics">
+                데이터 분석<br>
+                <small>빅데이터 처리<br>패턴 분석</small>
+            </div>
+            
+            <div class="layer integration-api">
+                통합 API<br>
+                <small>외부 시스템<br>연동 인터페이스</small>
+            </div>
+            
+            <!-- Control/Communication Layer -->
+            <div class="layer iot-sensors">
+                <div class="layer-label">제어 통신</div>
+                IoT 센서망<br>
+                <small>레이더/광학<br>융합 센서</small>
+            </div>
+            
+            <div class="layer communication">
+                5G 통신망<br>
+                <small>초고속 저지연<br>무선 통신</small>
+            </div>
+            
+            <div class="layer control-system">
+                중앙제어시스템<br>
+                <small>통합 제어<br>상황 관리</small>
+            </div>
+            
+            <div class="layer monitoring">
+                관제 모니터링<br>
+                <small>실시간 감시<br>수동 제어</small>
+            </div>
+            
+            <!-- Physical Device Layer -->
+            <div class="layer rel-lights">
+                <div class="layer-label">물리 장치</div>
+                REL 시스템<br>
+                <small>활주로 진입등<br>LED 조명</small>
+            </div>
+            
+            <div class="layer thl-lights">
+                THL 시스템<br>
+                <small>유도로 대기등<br>자동 차단</small>
+            </div>
+            
+            <div class="layer ril-lights">
+                RIL 시스템<br>
+                <small>교차로 경고등<br>충돌 방지</small>
+            </div>
+            
+            <div class="layer power-backup">
+                전원 백업<br>
+                <small>UPS 시스템<br>무정전 전원</small>
+            </div>
+            
+            <!-- Infrastructure Layer -->
+            <div class="layer physical-layer">
+                <div class="layer-label">인프라</div>
+                물리 인프라스트럭처<br>
+                <small>네트워크 인프라, 전력 공급, 케이블링, 설치 구조물</small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add fade-in animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const layers = document.querySelectorAll('.layer');
+            layers.forEach((layer, index) => {
+                layer.style.opacity = '0';
+                layer.style.transform = 'translateY(-20px)';
+                layer.style.transition = 'all 0.6s ease-in-out';
+                
+                setTimeout(() => {
+                    layer.style.opacity = '1';
+                    layer.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        });
+    </script>
+</body>
+</html>

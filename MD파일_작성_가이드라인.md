@@ -125,3 +125,72 @@
 ```
 
 이미지 파일은 `images/` 폴더에 저장하세요.
+
+## ⚠️ 변환기 고정 설정 - 절대 수정 금지 ⚠️
+
+### 불릿포인트 들여쓰기 설정
+
+**SimpleThermalConverter의 들여쓰기 설정은 절대 변경하지 마세요:**
+
+```python
+# add_bullet_paragraph 메소드의 들여쓰기 설정 (고정)
+if level == 1:  # □ 기호 (들여쓰기 없음)
+    para.paragraph_format.left_indent = Inches(0)
+elif level == 2:  # ○ 기호 (2칸 들여쓰기)
+    para.paragraph_format.left_indent = Inches(0.1)
+elif level == 3:  # - 기호 (4칸 들여쓰기)
+    para.paragraph_format.left_indent = Inches(0.2)
+else:  # • 기호 (6칸 이상 들여쓰기)
+    para.paragraph_format.left_indent = Inches(0.3)
+```
+
+**이 설정을 변경하면 사용자 요구사항에 맞지 않게 됩니다.**
+
+### 불릿포인트 기호 유지 설정
+
+**MD 파일의 원래 불릿포인트 기호(□, ○, -, •)를 절대 변경하지 마세요:**
+
+- MD 파일의 기호를 Word에서 그대로 유지
+- 기호 변경 또는 제거 금지
+- 사용자가 명시적으로 □ (흰 네모), ○ (흰 동그라미), - (대시), • (점) 순서를 요구함
+
+### 기타 고정 설정
+
+- H4 제목(`####`) 처리 로직 유지
+- 들여쓰기 있는 불릿포인트 인식 로직 유지
+- MD 원본 텍스트 그대로 Word에 전달하는 로직 유지
+
+## ⚠️ 변환 도구 사용 규칙 - 절대 준수 ⚠️
+
+### 변환기 선택
+**반드시 SimpleThermalConverter를 직접 사용하세요:**
+```bash
+python3 simple_thermal_converter.py "파일명.md"
+```
+
+**절대 사용 금지:**
+- HTMLBasedConverter (변환 중단 문제)
+- enhanced_converter.py (복잡한 로직으로 인한 오류)
+- GUI 기반 변환 (불안정)
+
+### HTML 차트 생성 규칙
+
+**Chart.js 설정시 반드시 애니메이션 비활성화:**
+```javascript
+options: {
+    animation: false,  // 필수 설정
+    // ... 기타 옵션
+}
+```
+
+**HTML to PNG 변환:**
+- capture-website-cli 사용 권장
+- 해상도: 900x600 픽셀 고정
+- 애니메이션 제거 후 캡처 수행
+
+### 작업 순서 (필수 준수)
+1. MD 파일 작성 (가이드라인 준수)
+2. HTML 차트 생성 (애니메이션: false)
+3. HTML to PNG 변환 (capture-website-cli)
+4. SimpleThermalConverter로 DOCX 생성
+5. 품질 검증

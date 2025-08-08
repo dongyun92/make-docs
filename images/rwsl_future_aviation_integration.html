@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWSL과 차세대 항공기술 통합 발전방안</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            width: 900px;
+            height: 560px;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: white;
+            box-sizing: border-box;
+        }
+        .diagram-container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .integration-diagram {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 20px;
+            height: 500px;
+            position: relative;
+        }
+        .tech-component {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 11px;
+            padding: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .tech-component:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+        /* Current Technologies */
+        .current-rwsl {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            grid-column: 2;
+            grid-row: 1;
+        }
+        .current-atm {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            grid-column: 1;
+            grid-row: 1;
+        }
+        .current-control {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            grid-column: 3;
+            grid-row: 1;
+        }
+        .current-communication {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            grid-column: 4;
+            grid-row: 1;
+        }
+        
+        /* Integration Layer */
+        .integration-platform {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            grid-column: 1 / 5;
+            grid-row: 2;
+            font-size: 11px;
+        }
+        
+        /* Future Technologies */
+        .future-uam {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            grid-column: 1;
+            grid-row: 3;
+        }
+        .future-autonomous {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            grid-column: 2;
+            grid-row: 3;
+        }
+        .future-ai {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            grid-column: 3;
+            grid-row: 3;
+        }
+        .future-quantum {
+            background: linear-gradient(135deg, #8e44ad, #7d3c98);
+            grid-column: 4;
+            grid-row: 3;
+        }
+        
+        /* Applications */
+        .applications {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            grid-column: 1 / 5;
+            grid-row: 4;
+            font-size: 11px;
+        }
+        
+        .tech-icon {
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-label {
+            position: absolute;
+            left: -80px;
+            font-weight: bold;
+            color: #2c3e50;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 11px;
+        }
+        
+        .current-label {
+            top: 10%;
+            color: #e74c3c;
+        }
+        
+        .integration-label {
+            top: 35%;
+            color: #9b59b6;
+        }
+        
+        .future-label {
+            top: 60%;
+            color: #1abc9c;
+        }
+        
+        .application-label {
+            top: 85%;
+            color: #95a5a6;
+        }
+    </style>
+
+    <!-- html2canvas 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- 자동 이미지 추출 스크립트 -->
+    <script>
+        window.addEventListener('load', function() {
+            // 페이지 로드 후 1초 대기 (차트 렌더링 완료 대기)
+            setTimeout(function() {
+                // 전체 body를 캡처
+                html2canvas(document.body, {
+                    useCORS: true,
+                    allowTaint: true,
+                    scale: 1,
+                    backgroundColor: '#ffffff',
+                    width: 900,
+                    height: 560
+                }).then(function(canvas) {
+                    // 이미지로 변환
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // 다운로드 링크 생성
+                    const fileName = window.location.pathname.split('/').pop().replace('.html', '.png');
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imgData;
+                    downloadLink.download = fileName;
+                    downloadLink.textContent = '이미지 다운로드';
+                    downloadLink.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: #007bff; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-family: Arial;';
+                    
+                    document.body.appendChild(downloadLink);
+                    
+                    // 자동으로 다운로드 시작 (옵션)
+                    // downloadLink.click();
+                    
+                    console.log('이미지 추출 완료. 다운로드 버튼이 우상단에 생성되었습니다.');
+                }).catch(function(error) {
+                    console.error('이미지 추출 실패:', error);
+                });
+            }, 1000);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="diagram-container">
+        <div class="chart-title">RWSL과 차세대 항공기술 통합 발전방안</div>
+        <div class="integration-diagram">
+            <!-- Timeline Labels -->
+            <div class="timeline-label current-label">현재 기술</div>
+            <div class="timeline-label integration-label">통합 플랫폼</div>
+            <div class="timeline-label future-label">차세대 기술</div>
+            <div class="timeline-label application-label">응용 분야</div>
+            
+            <!-- Current Technologies (2024-2028) -->
+            <div class="tech-component current-atm">
+                <div class="tech-icon">✈️</div>
+                항공교통관리<br>
+                (ATM)<br>
+                <small>기존 관제시스템</small>
+            </div>
+            
+            <div class="tech-component current-rwsl">
+                <div class="tech-icon">🚨</div>
+                RWSL 시스템<br>
+                <small>활주로 안전등<br>핵심 기술</small>
+            </div>
+            
+            <div class="tech-component current-control">
+                <div class="tech-icon">🎛️</div>
+                지상 제어<br>
+                (Ground Control)<br>
+                <small>공항 운영관리</small>
+            </div>
+            
+            <div class="tech-component current-communication">
+                <div class="tech-icon">📡</div>
+                통신 네트워크<br>
+                (5G/Wi-Fi)<br>
+                <small>실시간 데이터</small>
+            </div>
+            
+            <!-- Integration Platform (2028-2030) -->
+            <div class="tech-component integration-platform">
+                <div class="tech-icon">🔗</div>
+                차세대 항공안전 통합 플랫폼<br>
+                <small>AI 기반 통합 관제 • 실시간 예측 분석 • 자동화 의사결정 • 멀티모달 교통 연계</small>
+            </div>
+            
+            <!-- Future Technologies (2030-2035) -->
+            <div class="tech-component future-uam">
+                <div class="tech-icon">🚁</div>
+                도심항공교통<br>
+                (UAM)<br>
+                <small>드론 택시<br>수직이착륙</small>
+            </div>
+            
+            <div class="tech-component future-autonomous">
+                <div class="tech-icon">🤖</div>
+                자율비행<br>
+                (Autonomous)<br>
+                <small>무인 항공기<br>자동 제어</small>
+            </div>
+            
+            <div class="tech-component future-ai">
+                <div class="tech-icon">🧠</div>
+                AI 관제<br>
+                (AI-ATC)<br>
+                <small>완전 자동<br>관제시스템</small>
+            </div>
+            
+            <div class="tech-component future-quantum">
+                <div class="tech-icon">⚛️</div>
+                양자 통신<br>
+                (Quantum)<br>
+                <small>초고보안<br>초고속 통신</small>
+            </div>
+            
+            <!-- Applications (2035+) -->
+            <div class="tech-component applications">
+                <div class="tech-icon">🌐</div>
+                통합 응용 서비스<br>
+                <small>스마트시티 연계 • 멀티모달 교통 • 글로벌 항공망 • 우주항공 확장 • 완전자율 항공교통시스템</small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add entrance animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const components = document.querySelectorAll('.tech-component');
+            components.forEach((component, index) => {
+                component.style.opacity = '0';
+                component.style.transform = 'translateY(20px) scale(0.9)';
+                component.style.transition = 'all 0.8s ease-out';
+                
+                setTimeout(() => {
+                    component.style.opacity = '1';
+                    component.style.transform = 'translateY(0) scale(1)';
+                }, index * 200);
+            });
+        });
+
+        // Add click interactions
+        document.querySelectorAll('.tech-component').forEach(component => {
+            component.addEventListener('click', function() {
+                // Add pulse effect
+                this.style.animation = 'pulse 0.6s ease-in-out';
+                setTimeout(() => {
+                    this.style.animation = '';
+                }, 600);
+            });
+        });
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

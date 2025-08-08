@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1단계 인천공항 RWSL 구축 계획</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            width: 900px;
+            height: 560px;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: white;
+            box-sizing: border-box;
+        }
+        .chart-container {
+            height: 480px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .milestones {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .milestone {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid;
+        }
+        .milestone.design { border-color: #3498db; }
+        .milestone.construction { border-color: #e74c3c; }
+        .milestone.testing { border-color: #f39c12; }
+        .milestone.operation { border-color: #2ecc71; }
+        .milestone-title {
+            font-weight: bold;
+            font-size: 11px;
+            color: #2c3e50;
+        }
+        .milestone-date {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+    </style>
+
+    <!-- html2canvas 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- 자동 이미지 추출 스크립트 -->
+    <script>
+        window.addEventListener('load', function() {
+            // 페이지 로드 후 1초 대기 (차트 렌더링 완료 대기)
+            setTimeout(function() {
+                // 전체 body를 캡처
+                html2canvas(document.body, {
+                    useCORS: true,
+                    allowTaint: true,
+                    scale: 1,
+                    backgroundColor: '#ffffff',
+                    width: 900,
+                    height: 560
+                }).then(function(canvas) {
+                    // 이미지로 변환
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // 다운로드 링크 생성
+                    const fileName = window.location.pathname.split('/').pop().replace('.html', '.png');
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imgData;
+                    downloadLink.download = fileName;
+                    downloadLink.textContent = '이미지 다운로드';
+                    downloadLink.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: #007bff; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-family: Arial;';
+                    
+                    document.body.appendChild(downloadLink);
+                    
+                    // 자동으로 다운로드 시작 (옵션)
+                    // downloadLink.click();
+                    
+                    console.log('이미지 추출 완료. 다운로드 버튼이 우상단에 생성되었습니다.');
+                }).catch(function(error) {
+                    console.error('이미지 추출 실패:', error);
+                });
+            }, 1000);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">1단계 인천공항 RWSL 구축 계획</div>
+        <div class="chart-subtitle">(2024.03 - 2025.12, 총 예산: 450억원)</div>
+        <canvas id="phase1Chart" width="900" height="400"></canvas>
+        
+        <div class="milestones">
+            <div class="milestone design">
+                <div class="milestone-title">설계 완료</div>
+                <div class="milestone-date">2024.12</div>
+            </div>
+            <div class="milestone construction">
+                <div class="milestone-title">시설 구축</div>
+                <div class="milestone-date">2025.06</div>
+            </div>
+            <div class="milestone testing">
+                <div class="milestone-title">성능 시험</div>
+                <div class="milestone-date">2025.09</div>
+            </div>
+            <div class="milestone operation">
+                <div class="milestone-title">운영 개시</div>
+                <div class="milestone-date">2025.12</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('phase1Chart').getContext('2d');
+        const phase1Chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    '설계 및 계획', 
+                    '허가 및 인증', 
+                    '장비 조달',
+                    '설치 공사',
+                    '시스템 통합',
+                    '성능 시험',
+                    '운영자 교육',
+                    '시범 운영'
+                ],
+                datasets: [
+                    {
+                        label: '2024년',
+                        data: [5, 3, 4, 2, 0, 0, 0, 0], // 월 단위
+                        backgroundColor: 'rgba(52, 152, 219, 0.8)',
+                        borderColor: '#3498db',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '2025년',
+                        data: [2, 2, 2, 6, 4, 3, 2, 3], // 월 단위
+                        backgroundColor: 'rgba(231, 76, 60, 0.8)',
+                        borderColor: '#e74c3c',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+            animation: false,
+                indexAxis: 'y', // 수평 막대 차트
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.x + '개월';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: '소요 기간 (개월)',
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        },
+                        max: 12,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: '구축 단계',
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    }
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                }
+            }
+        });
+    </script>
+</body>
+</html>

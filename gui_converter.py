@@ -69,7 +69,7 @@ class MDToDOCXConverter:
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # 제목
-        title_label = ttk.Label(main_frame, text="MD to DOCX 변환기", 
+        title_label = ttk.Label(main_frame, text="🚀 사업계획서 자동 생성기", 
                                font=('Arial', 16, 'bold'))
         title_label.grid(row=0, column=0, columnspan=3, pady=(0, 20))
         
@@ -360,47 +360,24 @@ class MDToDOCXConverter:
             self.generate_charts()
     
     def capture_html_files(self):
-        """선택된 HTML 파일들을 PNG로 변환"""
+        """검증된 html_to_png_converter.py 사용하여 HTML 파일들을 PNG로 변환"""
         if not self.selected_html_files:
             self.log_message("선택된 HTML 파일이 없습니다.")
             return
         
-        if not self.chrome_path:
-            self.log_message("Chrome이 없어 HTML 캡처를 건너뜁니다.")
-            return
+        self.log_message(f"html_to_png_converter로 HTML 파일 {len(self.selected_html_files)}개를 PNG로 변환합니다...")
         
-        self.log_message(f"선택된 HTML 파일 {len(self.selected_html_files)}개를 PNG로 변환합니다...")
-        
-        images_dir = Path("images")
-        images_dir.mkdir(exist_ok=True)
-        
-        for html_file in self.selected_html_files:
-            html_path = Path(html_file)
-            png_file = images_dir / f"{html_path.stem}.png"
+        try:
+            # html_to_png_converter 임포트 및 실행
+            from html_to_png_converter import HTMLToPNGConverter
             
-            try:
-                cmd = [
-                    self.chrome_path,
-                    "--headless",
-                    "--disable-gpu",
-                    "--hide-scrollbars",
-                    "--force-device-scale-factor=1",
-                    "--window-size=900,600",
-                    f"--screenshot={png_file}",
-                    str(html_path.absolute())
-                ]
-                
-                result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-                
-                if png_file.exists():
-                    self.log_message(f"✅ {html_path.name} → {png_file.name}")
-                else:
-                    self.log_message(f"⚠️ {html_path.name} 캡처 실패")
-                    
-            except subprocess.TimeoutExpired:
-                self.log_message(f"⚠️ {html_path.name} 캡처 시간 초과")
-            except Exception as e:
-                self.log_message(f"⚠️ {html_path.name} 캡처 오류: {str(e)}")
+            converter = HTMLToPNGConverter()
+            converted_count = converter.convert_rwsl_charts()
+            
+            self.log_message(f"✅ {converted_count}개 HTML 파일 변환 완료!")
+            
+        except Exception as e:
+            self.log_message(f"⚠️ HTML 변환 오류: {str(e)}")
     
     def auto_generate_and_capture_charts(self):
         """프로젝트별 고유 차트 자동 생성 (레거시 지원)"""
@@ -470,24 +447,20 @@ class MDToDOCXConverter:
             if self.selected_html_files:
                 self.capture_html_files()
             
-            # 향상된 변환기 사용
-            from enhanced_converter import HTMLBasedConverter
-            converter = HTMLBasedConverter()
+            # MD 파일 그대로 처리하는 범용 변환기 사용
+            from universal_md_converter import UniversalMDConverter
+            converter = UniversalMDConverter()
             
-            # HTML 파일들과 함께 변환
-            if self.selected_html_files:
-                success = converter.convert_md_with_htmls(
-                    self.selected_md_file.get(),
-                    self.selected_html_files,
-                    output_file
-                )
+            # HTML 파일이 있든 없든 MD 파일 그대로 처리 (재배치 안함)
+            generated_path = converter.convert(self.selected_md_file.get())
+            if generated_path and os.path.exists(generated_path):
+                import shutil
+                shutil.move(generated_path, output_file)
+                success = True
+                print(f"✅ MD 파일 구조 그대로 변환 완료: {output_file}")
             else:
-                # HTML 파일이 없으면 기본 변환
-                from enhanced_converter import convert_with_comprehensive_approach
-                success = convert_with_comprehensive_approach(
-                    self.selected_md_file.get(),
-                    output_file
-                )
+                success = False
+                print(f"❌ 변환 실패: 파일이 생성되지 않았습니다")
             
             if success:
                 self.log_message("✅ 문서 변환이 완료되었습니다!")

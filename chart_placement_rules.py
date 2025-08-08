@@ -200,7 +200,8 @@ class ImagePlacementProcessor:
         
         for html_file in html_files:
             html_path = Path(html_file)
-            image_path = html_path.parent / "images" / f"{html_path.stem}.png"
+            # HTML 파일이 이미 images/ 폴더에 있으므로 같은 폴더에서 PNG 찾기
+            image_path = html_path.parent / f"{html_path.stem}.png"
             
             # HTML 파일에서 차트 타입 추정 (파일명 기반)
             chart_type = self._estimate_chart_type(html_path.name)

@@ -11,10 +11,10 @@ from docx.shared import Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.shared import OxmlElement, qn
 from chart_placement_rules import ImagePlacementProcessor
-from simple_thermal_converter import SimpleThermalConverter
+from universal_md_converter import UniversalMDConverter
 
 
-class EnhancedMDConverter(SimpleThermalConverter):
+class EnhancedMDConverter(UniversalMDConverter):
     """HTML 파일 기반 이미지 배치를 지원하는 향상된 MD 변환기"""
     
     def __init__(self):
@@ -44,16 +44,32 @@ class EnhancedMDConverter(SimpleThermalConverter):
             
             try:
                 # 향상된 MD 내용으로 변환
-                self.convert(temp_md_path, output_path)
-                print(f"✅ 이미지 포함 변환 완료: {output_path}")
+                generated_path = self.convert(temp_md_path)
+                
+                # 생성된 파일을 원하는 위치로 이동
+                if generated_path and os.path.exists(generated_path):
+                    import shutil
+                    shutil.move(generated_path, output_path)
+                    print(f"✅ 이미지 포함 변환 완료: {output_path}")
+                    return True
+                else:
+                    print(f"❌ 변환 실패: 파일이 생성되지 않았습니다")
+                    return False
             finally:
                 # 임시 파일 삭제
                 if os.path.exists(temp_md_path):
                     os.remove(temp_md_path)
         else:
             # HTML 파일이 없으면 기본 변환
-            self.convert(md_file_path, output_path)
-            print(f"✅ 기본 변환 완료: {output_path}")
+            generated_path = self.convert(md_file_path)
+            if generated_path and os.path.exists(generated_path):
+                import shutil
+                shutil.move(generated_path, output_path)
+                print(f"✅ 기본 변환 완료: {output_path}")
+                return True
+            else:
+                print(f"❌ 기본 변환 실패")
+                return False
     
     def process_image_with_smart_placement(self, lines: List[str], start_idx: int) -> int:
         """

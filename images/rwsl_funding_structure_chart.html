@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재원 조달 구조</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            width: 900px;
+            height: 560px;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: white;
+            box-sizing: border-box;
+        }
+        .chart-container {
+            height: 480px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .funding-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .funding-item {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid;
+        }
+        .funding-item.government { border-color: #3498db; }
+        .funding-item.public { border-color: #2ecc71; }
+        .funding-item.private { border-color: #e74c3c; }
+        .funding-title {
+            font-weight: bold;
+            font-size: 11px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        .funding-amount {
+            font-size: 11px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 8px;
+        }
+        .funding-method {
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+    </style>
+
+    <!-- html2canvas 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- 자동 이미지 추출 스크립트 -->
+    <script>
+        window.addEventListener('load', function() {
+            // 페이지 로드 후 1초 대기 (차트 렌더링 완료 대기)
+            setTimeout(function() {
+                // 전체 body를 캡처
+                html2canvas(document.body, {
+                    useCORS: true,
+                    allowTaint: true,
+                    scale: 1,
+                    backgroundColor: '#ffffff',
+                    width: 900,
+                    height: 560
+                }).then(function(canvas) {
+                    // 이미지로 변환
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // 다운로드 링크 생성
+                    const fileName = window.location.pathname.split('/').pop().replace('.html', '.png');
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imgData;
+                    downloadLink.download = fileName;
+                    downloadLink.textContent = '이미지 다운로드';
+                    downloadLink.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: #007bff; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-family: Arial;';
+                    
+                    document.body.appendChild(downloadLink);
+                    
+                    // 자동으로 다운로드 시작 (옵션)
+                    // downloadLink.click();
+                    
+                    console.log('이미지 추출 완료. 다운로드 버튼이 우상단에 생성되었습니다.');
+                }).catch(function(error) {
+                    console.error('이미지 추출 실패:', error);
+                });
+            }, 1000);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">재원 조달 구조</div>
+        <div class="chart-subtitle">(총 조달액: 1,230억원)</div>
+        <canvas id="fundingChart" width="600" height="400"></canvas>
+        
+        <div class="funding-details">
+            <div class="funding-item government">
+                <div class="funding-title">정부 예산</div>
+                <div class="funding-amount">738억원 (60%)</div>
+                <div class="funding-method">국토교통부<br>항공안전 특별예산</div>
+            </div>
+            <div class="funding-item public">
+                <div class="funding-title">공항공사</div>
+                <div class="funding-amount">369억원 (30%)</div>
+                <div class="funding-method">인천공항공사<br>자체 투자</div>
+            </div>
+            <div class="funding-item private">
+                <div class="funding-title">민간 투자</div>
+                <div class="funding-amount">123억원 (10%)</div>
+                <div class="funding-method">기술개발 업체<br>지분 참여</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('fundingChart').getContext('2d');
+        const fundingChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['정부 예산', '공항공사', '민간 투자'],
+                datasets: [{
+                    data: [60, 30, 10],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.8)',   // 정부 - 파란색
+                        'rgba(46, 204, 113, 0.8)',   // 공공 - 초록색
+                        'rgba(231, 76, 60, 0.8)'     // 민간 - 빨간색
+                    ],
+                    borderColor: [
+                        '#2980b9',
+                        '#27ae60', 
+                        '#c0392b'
+                    ],
+                    borderWidth: 3,
+                    hoverOffset: 15
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            },
+                            padding: 20,
+                            generateLabels: function(chart) {
+                                const original = Chart.defaults.plugins.legend.labels.generateLabels;
+                                const labels = original.call(this, chart);
+                                const data = chart.data.datasets[0].data;
+                                const amounts = [738, 369, 123];
+                                
+                                labels.forEach((label, i) => {
+                                    label.text = `${label.text}: ${amounts[i]}억원 (${data[i]}%)`;
+                                });
+                                return labels;
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const amounts = [738, 369, 123];
+                                const methods = [
+                                    '국토교통부 항공안전 특별예산',
+                                    '인천공항공사 자체 투자',
+                                    '기술개발 업체 지분 참여'
+                                ];
+                                return [
+                                    `${label}: ${value}%`,
+                                    `조달액: ${amounts[context.dataIndex]}억원`,
+                                    `조달방식: ${methods[context.dataIndex]}`
+                                ];
+                            }
+                        }
+                    }
+                },
+                animation: false
+            }
+        });
+    </script>
+</body>
+</html>

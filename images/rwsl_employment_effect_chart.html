@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWSL 사업의 고용창출 효과</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            width: 900px;
+            height: 560px;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: white;
+            box-sizing: border-box;
+        }
+        .chart-container {
+            height: 480px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .employment-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .summary-item {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid;
+        }
+        .summary-item.direct { border-color: #3498db; }
+        .summary-item.indirect { border-color: #2ecc71; }
+        .summary-item.total { border-color: #e74c3c; }
+        .summary-title {
+            font-weight: bold;
+            font-size: 11px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        .summary-number {
+            font-size: 11px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 5px;
+        }
+        .summary-description {
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+    </style>
+
+    <!-- html2canvas 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- 자동 이미지 추출 스크립트 -->
+    <script>
+        window.addEventListener('load', function() {
+            // 페이지 로드 후 1초 대기 (차트 렌더링 완료 대기)
+            setTimeout(function() {
+                // 전체 body를 캡처
+                html2canvas(document.body, {
+                    useCORS: true,
+                    allowTaint: true,
+                    scale: 1,
+                    backgroundColor: '#ffffff',
+                    width: 900,
+                    height: 560
+                }).then(function(canvas) {
+                    // 이미지로 변환
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // 다운로드 링크 생성
+                    const fileName = window.location.pathname.split('/').pop().replace('.html', '.png');
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imgData;
+                    downloadLink.download = fileName;
+                    downloadLink.textContent = '이미지 다운로드';
+                    downloadLink.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: #007bff; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-family: Arial;';
+                    
+                    document.body.appendChild(downloadLink);
+                    
+                    // 자동으로 다운로드 시작 (옵션)
+                    // downloadLink.click();
+                    
+                    console.log('이미지 추출 완료. 다운로드 버튼이 우상단에 생성되었습니다.');
+                }).catch(function(error) {
+                    console.error('이미지 추출 실패:', error);
+                });
+            }, 1000);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">RWSL 사업의 고용창출 효과</div>
+        <div class="chart-subtitle">(단계별 고용창출 현황, 단위: 명)</div>
+        <canvas id="employmentChart" width="800" height="400"></canvas>
+        
+        <div class="employment-summary">
+            <div class="summary-item direct">
+                <div class="summary-title">직접 고용</div>
+                <div class="summary-number">355명</div>
+                <div class="summary-description">프로젝트 직접 참여</div>
+            </div>
+            <div class="summary-item indirect">
+                <div class="summary-title">간접 고용</div>
+                <div class="summary-number">810명</div>
+                <div class="summary-description">관련 산업 파급효과</div>
+            </div>
+            <div class="summary-item total">
+                <div class="summary-title">총 고용 창출</div>
+                <div class="summary-number">1,165명</div>
+                <div class="summary-description">5년간 누적 고용</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('employmentChart').getContext('2d');
+        const employmentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['1단계\n(2024-2025)', '2단계\n(2025-2026)', '3단계\n(2026-2027)', '4단계\n(2027-2028)'],
+                datasets: [
+                    {
+                        label: '직접 고용',
+                        data: [120, 85, 78, 72],
+                        backgroundColor: 'rgba(52, 152, 219, 0.8)',
+                        borderColor: '#3498db',
+                        borderWidth: 2
+                    },
+                    {
+                        label: '간접 고용',
+                        data: [280, 195, 175, 160],
+                        backgroundColor: 'rgba(46, 204, 113, 0.8)',
+                        borderColor: '#2ecc71',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+            animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const airports = ['인천국제공항', '김포국제공항', '김해국제공항', '제주국제공항'];
+                                const phases = ['1단계', '2단계', '3단계', '4단계'];
+                                return [
+                                    `${context.dataset.label}: ${context.parsed.y}명`,
+                                    `대상공항: ${airports[context.dataIndex]}`,
+                                    `구축단계: ${phases[context.dataIndex]}`
+                                ];
+                            },
+                            afterLabel: function(context) {
+                                const directJobs = [120, 85, 78, 72];
+                                const indirectJobs = [280, 195, 175, 160];
+                                const total = directJobs[context.dataIndex] + indirectJobs[context.dataIndex];
+                                return `총 고용: ${total}명`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: '사업 단계',
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: '고용 창출 (명)',
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        },
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    }
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                }
+            }
+        });
+
+        // Add data labels on bars
+        const dataLabelsPlugin = {
+            id: 'dataLabels',
+            afterDatasetsDraw: function(chart) {
+                const ctx = chart.ctx;
+                ctx.font = '10px Malgun Gothic';
+                ctx.fillStyle = '#2c3e50';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                chart.data.datasets.forEach(function(dataset, datasetIndex) {
+                    const meta = chart.getDatasetMeta(datasetIndex);
+                    meta.data.forEach(function(bar, index) {
+                        const data = dataset.data[index];
+                        const x = bar.x;
+                        const y = bar.y - (bar.height / 2);
+                        
+                        ctx.fillStyle = 'white';
+                        ctx.font = 'bold 11px Malgun Gothic';
+                        ctx.fillText(data + '명', x, y);
+                    });
+                });
+            }
+        };
+        
+        Chart.register(dataLabelsPlugin);
+    </script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투자 회수 기간 분석</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            width: 900px;
+            height: 560px;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: white;
+            box-sizing: border-box;
+        }
+        .chart-container {
+            height: 480px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .analysis-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .metric-item {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid;
+        }
+        .metric-item.bc-ratio { border-color: #3498db; }
+        .metric-item.npv { border-color: #2ecc71; }
+        .metric-item.irr { border-color: #f39c12; }
+        .metric-item.payback { border-color: #e74c3c; }
+        .metric-title {
+            font-weight: bold;
+            font-size: 11px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        .metric-value {
+            font-size: 11px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 5px;
+        }
+        .metric-rating {
+            font-size: 11px;
+            color: #2ecc71;
+            font-weight: bold;
+        }
+    </style>
+
+    <!-- html2canvas 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- 자동 이미지 추출 스크립트 -->
+    <script>
+        window.addEventListener('load', function() {
+            // 페이지 로드 후 1초 대기 (차트 렌더링 완료 대기)
+            setTimeout(function() {
+                // 전체 body를 캡처
+                html2canvas(document.body, {
+                    useCORS: true,
+                    allowTaint: true,
+                    scale: 1,
+                    backgroundColor: '#ffffff',
+                    width: 900,
+                    height: 560
+                }).then(function(canvas) {
+                    // 이미지로 변환
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    // 다운로드 링크 생성
+                    const fileName = window.location.pathname.split('/').pop().replace('.html', '.png');
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imgData;
+                    downloadLink.download = fileName;
+                    downloadLink.textContent = '이미지 다운로드';
+                    downloadLink.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: #007bff; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-family: Arial;';
+                    
+                    document.body.appendChild(downloadLink);
+                    
+                    // 자동으로 다운로드 시작 (옵션)
+                    // downloadLink.click();
+                    
+                    console.log('이미지 추출 완료. 다운로드 버튼이 우상단에 생성되었습니다.');
+                }).catch(function(error) {
+                    console.error('이미지 추출 실패:', error);
+                });
+            }, 1000);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">투자 회수 기간 분석</div>
+        <div class="chart-subtitle">(투자 대비 편익 누적 분석)</div>
+        <canvas id="paybackChart" width="800" height="400"></canvas>
+        
+        <div class="analysis-summary">
+            <div class="metric-item bc-ratio">
+                <div class="metric-title">B/C 비율</div>
+                <div class="metric-value">2.85</div>
+                <div class="metric-rating">매우 우수</div>
+            </div>
+            <div class="metric-item npv">
+                <div class="metric-title">NPV</div>
+                <div class="metric-value">2,847억원</div>
+                <div class="metric-rating">매우 우수</div>
+            </div>
+            <div class="metric-item irr">
+                <div class="metric-title">IRR</div>
+                <div class="metric-value">28.5%</div>
+                <div class="metric-rating">매우 우수</div>
+            </div>
+            <div class="metric-item payback">
+                <div class="metric-title">투자회수기간</div>
+                <div class="metric-value">3.2년</div>
+                <div class="metric-rating">우수</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('paybackChart').getContext('2d');
+        const paybackChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['1년차', '2년차', '3년차', '4년차', '5년차', '6년차', '7년차', '8년차', '9년차', '10년차'],
+                datasets: [
+                    {
+                        label: '누적 투자액',
+                        data: [-1230, -1230, -1230, -1230, -1230, -1230, -1230, -1230, -1230, -1230],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderWidth: 3,
+                        tension: 0,
+                        fill: false
+                    },
+                    {
+                        label: '누적 편익 (할인)',
+                        data: [-380, 190, 770, 1350, 1920, 2480, 3030, 3570, 4100, 4620],
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: '+1'
+                    },
+                    {
+                        label: '순편익 (NPV)',
+                        data: [-1610, -1040, -460, 120, 690, 1250, 1800, 2340, 2870, 3390],
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 4,
+                        tension: 0.3,
+                        borderDash: [0],
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }
+                ]
+            },
+            options: {
+            animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                return context.dataset.label + ': ' + value + '억원';
+                            },
+                            afterLabel: function(context) {
+                                if (context.datasetIndex === 2 && context.dataIndex === 3) {
+                                    return '📍 투자회수 달성 (3.2년차)';
+                                }
+                                return '';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '연차',
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '누적 금액 (억원)',
+                            font: {
+                                size: 11,
+                                family: 'Malgun Gothic'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
+        });
+
+        // Add break-even point annotation
+        const breakEvenPlugin = {
+            id: 'breakEvenLine',
+            afterDraw: function(chart) {
+                const ctx = chart.ctx;
+                const chartArea = chart.chartArea;
+                
+                // Draw zero line
+                ctx.save();
+                ctx.strokeStyle = '#34495e';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(chartArea.left, chart.scales.y.getPixelForValue(0));
+                ctx.lineTo(chartArea.right, chart.scales.y.getPixelForValue(0));
+                ctx.stroke();
+                
+                // Add break-even annotation
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = 'bold 12px Malgun Gothic';
+                ctx.textAlign = 'center';
+                ctx.fillText('손익분기점', chart.scales.x.getPixelForValue(3.2), chart.scales.y.getPixelForValue(0) - 10);
+                ctx.restore();
+            }
+        };
+        
+        Chart.register(breakEvenPlugin);
+    </script>
+</body>
+</html>
