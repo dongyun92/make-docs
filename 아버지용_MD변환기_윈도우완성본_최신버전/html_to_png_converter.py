@@ -28,7 +28,7 @@ class HTMLToPNGConverter:
             print(f"📁 임시 디렉토리 사용: {self.output_dir}")
         
     def convert_html_to_png(self, html_file_path: str) -> str:
-        """HTML 파일을 PNG로 변환 (Chrome 사용)"""
+        """HTML 파일을 PNG로 변환 - HTML 수정 방식으로 정확한 높이 감지"""
         try:
             filename = os.path.basename(html_file_path).replace('.html', '.png')
             output_path = os.path.join(self.output_dir, filename)
@@ -39,7 +39,7 @@ class HTMLToPNGConverter:
             if os.path.exists(output_path):
                 os.remove(output_path)
             
-            # macOS Chrome 경로 (Windows 경로 제거)
+            # macOS Chrome 경로
             chrome_paths = [
                 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
             ]
@@ -53,23 +53,28 @@ class HTMLToPNGConverter:
             
             if not chrome_path:
                 print("❌ Chrome을 찾을 수 없습니다")
-                print("   시도한 경로들:")
-                for path in chrome_paths:
-                    print(f"   - {path}: {'존재함' if os.path.exists(path) else '없음'}")
                 return None
             
-            # 절대 경로로 변환 (macOS)
-            abs_html_path = os.path.abspath(html_file_path)
-            file_url = f"file://{abs_html_path}"
+            # 1단계: HTML을 수정해서 높이 감지
+            print(f"🔍 1단계: HTML 수정하여 높이 감지...")
+            actual_height = self.detect_height_by_html_modification(html_file_path, chrome_path)
+            print(f"🔍 감지된 실제 높이: {actual_height}px")
             
-            # Chrome 헤드리스 모드로 스크린샷
+            # 2단계: 감지된 높이로 정확한 캡처
+            final_height = actual_height + 50  # 여백 50px만 추가
+            print(f"🔍 2단계: {final_height}px로 정확한 캡처...")
+            
+            file_url = f"file://{os.path.abspath(html_file_path)}"
             cmd = [
                 chrome_path,
                 "--headless",
                 "--disable-gpu",
                 "--hide-scrollbars",
+                "--disable-web-security",
                 "--force-device-scale-factor=1",
-                "--window-size=1200,1400",
+                f"--window-size=1000,{final_height}",
+                "--virtual-time-budget=3000",
+                "--run-all-compositor-stages-before-draw",
                 f"--screenshot={output_path}",
                 file_url
             ]
@@ -152,6 +157,76 @@ class HTMLToPNGConverter:
             
         except Exception as e:
             print(f"❌ 복사 실패 {os.path.basename(png_path)}: {e}")
+    
+    def detect_height_by_html_modification(self, html_file_path: str, chrome_path: str) -> int:
+        """HTML을 일시적으로 수정해서 실제 콘텐츠 높이 감지"""
+        import tempfile
+        import re
+        
+        try:
+            # 원본 HTML 읽기
+            with open(html_file_path, 'r', encoding='utf-8') as f:
+                html_content = f.read()
+            
+            # 높이 측정용 JavaScript 삽입
+            height_detection_script = '''
+<script>
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const height = Math.max(
+            document.body.scrollHeight,
+            document.body.offsetHeight, 
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight
+        );
+        document.title = 'HEIGHT_' + height;
+    }, 500);
+});
+</script>
+'''
+            
+            # 스크립트를 </head> 전에 삽입
+            if '</head>' in html_content:
+                modified_html = html_content.replace('</head>', height_detection_script + '</head>')
+            else:
+                # </head>가 없으면 <body> 전에 삽입
+                modified_html = html_content.replace('<body>', height_detection_script + '<body>')
+            
+            # 임시 HTML 파일 생성
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.html', delete=False, encoding='utf-8') as f:
+                f.write(modified_html)
+                temp_html = f.name
+            
+            try:
+                file_url = f"file://{os.path.abspath(temp_html)}"
+                
+                cmd = [
+                    chrome_path,
+                    "--headless",
+                    "--disable-gpu",
+                    "--window-size=1000,1000",
+                    "--virtual-time-budget=2000",
+                    "--run-all-compositor-stages-before-draw",
+                    "--dump-dom",
+                    file_url
+                ]
+                
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+                
+                # title에서 높이 추출
+                title_match = re.search(r'<title>HEIGHT_(\d+)</title>', result.stdout)
+                if title_match:
+                    detected_height = int(title_match.group(1))
+                    return detected_height
+                    
+            finally:
+                os.unlink(temp_html)
+                
+        except Exception as e:
+            print(f"⚠️  높이 감지 실패: {e}")
+        
+        return 800  # 기본값
     
     def copy_to_images_folder(self):
         """변환된 파일들을 images 폴더로 복사"""

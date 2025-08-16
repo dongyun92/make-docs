@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>환경 효과 전망</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            width: 900px;
+            height: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        #myChart {
+            max-height: 450px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">환경 효과 전망</div>
+        <div class="chart-subtitle">사업 완료 후 연간 기대 효과</div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        
+        const data = {
+            labels: ['탄소 흡수량\n(톤 CO₂)', '산소 공급량\n(톤)', '미세먼지 저감\n(%)', '기온 저감\n(℃)'],
+            datasets: [{
+                label: '환경 효과',
+                data: [1500, 1200, 10, 2],
+                backgroundColor: [
+                    '#27AE60', // 탄소 흡수 - 초록
+                    '#3498DB', // 산소 공급 - 파랑
+                    '#9B59B6', // 미세먼지 저감 - 보라
+                    '#E74C3C'  // 기온 저감 - 빨강
+                ],
+                borderColor: '#2c3e50',
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const labels = ['톤 CO₂', '톤', '%', '℃'];
+                                return context.parsed.y + ' ' + labels[context.dataIndex];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '효과 정도',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '환경 효과 분야',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        ticks: {
+                            font: {
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>

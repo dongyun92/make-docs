@@ -360,7 +360,17 @@ class MDToDOCXConverter:
     
     def check_dependencies(self):
         """필수 라이브러리 설치 확인"""
-        self.log_message("필수 라이브러리 확인 중...")
+        import sys
+        import importlib.util
+        
+        self.log_message("🔍 디버깅 정보:")
+        self.log_message(f"Python 버전: {sys.version}")
+        self.log_message(f"Python 실행 경로: {sys.executable}")
+        self.log_message(f"Python 패키지 경로들:")
+        for path in sys.path:
+            self.log_message(f"  - {path}")
+        
+        self.log_message("\n필수 라이브러리 확인 중...")
         
         required_libs = [
             ("docx", "python-docx"),
@@ -374,10 +384,14 @@ class MDToDOCXConverter:
         
         for module_name, package_name in required_libs:
             try:
-                __import__(module_name)
-                self.log_message(f"✅ {package_name}: 설치됨")
-            except ImportError:
-                self.log_message(f"❌ {package_name}: 미설치")
+                spec = importlib.util.find_spec(module_name)
+                if spec is not None:
+                    self.log_message(f"✅ {package_name}: 설치됨 (위치: {spec.origin})")
+                else:
+                    self.log_message(f"❌ {package_name}: 미설치 - importlib.util.find_spec 결과 None")
+                    missing_libs.append(package_name)
+            except Exception as e:
+                self.log_message(f"❌ {package_name}: 확인 실패 - 예외: {type(e).__name__}: {e}")
                 missing_libs.append(package_name)
         
         if missing_libs:
@@ -404,12 +418,31 @@ class MDToDOCXConverter:
             
             # MD 파일 변환 (MD 파일과 같은 위치에 자동 저장)
             generated_path = converter.convert(self.selected_md_file.get())
+            
+            # 생성된 파일 경로 디버깅
+            self.log_message(f"🔍 변환 결과 경로: {generated_path}")
+            if generated_path:
+                parent_dir = os.path.dirname(generated_path)
+                self.log_message(f"🔍 상위 디렉토리: {parent_dir}")
+                self.log_message(f"🔍 디렉토리 존재 여부: {os.path.exists(parent_dir)}")
+                if not os.path.exists(parent_dir):
+                    self.log_message(f"🔧 디렉토리 생성 시도: {parent_dir}")
+                    try:
+                        os.makedirs(parent_dir, exist_ok=True)
+                        self.log_message(f"✅ 디렉토리 생성 완료")
+                    except Exception as dir_e:
+                        self.log_message(f"❌ 디렉토리 생성 실패: {dir_e}")
+            
             if generated_path and os.path.exists(generated_path):
                 success = True
                 self.log_message(f"✅ 변환 완료: {generated_path}")
                 print(f"✅ MD 파일 구조 그대로 변환 완료: {generated_path}")
             else:
                 success = False
+                self.log_message(f"❌ 변환 실패: 파일이 생성되지 않았습니다")
+                if generated_path:
+                    self.log_message(f"   예상 경로: {generated_path}")
+                    self.log_message(f"   파일 존재 여부: {os.path.exists(generated_path)}")
                 print(f"❌ 변환 실패: 파일이 생성되지 않았습니다")
             
             if success:

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>남부지방산림청 관할 지역별 산림면적</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .chart-container {
+            width: 900px;
+            height: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        .chart-subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        #myChart {
+            max-height: 450px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-title">남부지방산림청 관할 지역별 산림면적</div>
+        <div class="chart-subtitle">단위: ha (헥타르)</div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        
+        const data = {
+            labels: ['봉화군', '영덕군', '영양군', '울진군', '문경시', '영주시', '포항시', '김천시', '청송군', '상주시'],
+            datasets: [{
+                label: '산림면적 (ha)',
+                data: [52712, 21435, 37294, 49694, 14728, 14287, 8451, 9866, 9773, 8970],
+                backgroundColor: [
+                    '#2E8B57', // 봉화군 - 진한 초록
+                    '#3CB371', // 영덕군
+                    '#20B2AA', // 영양군
+                    '#32CD32', // 울진군
+                    '#6B8E23', // 문경시
+                    '#228B22', // 영주시
+                    '#90EE90', // 포항시
+                    '#98FB98', // 김천시
+                    '#ADFF2F', // 청송군
+                    '#7CFC00'  // 상주시
+                ],
+                borderColor: '#1e5631',
+                borderWidth: 2
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toLocaleString() + ' ha';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '산림면적 (ha)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '지역',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>

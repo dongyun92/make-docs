@@ -19,7 +19,7 @@ class HTMLToPNGConverter:
         print(f"📁 이미지 저장 디렉토리: {self.output_dir}")
         
     def convert_html_to_png(self, html_file_path: str) -> str:
-        """HTML 파일을 PNG로 변환"""
+        """HTML 파일을 PNG로 변환 (Chrome 사용)"""
         try:
             filename = os.path.basename(html_file_path).replace('.html', '.png')
             output_path = os.path.join(self.output_dir, filename)
@@ -30,21 +30,46 @@ class HTMLToPNGConverter:
             if os.path.exists(output_path):
                 os.remove(output_path)
             
-            # capture-website-cli 명령어 실행
+            # Chrome 경로 찾기 (macOS용)
+            chrome_paths = [
+                "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "/usr/bin/google-chrome",
+                "/usr/bin/google-chrome-stable"
+            ]
+            
+            chrome_path = None
+            for path in chrome_paths:
+                if os.path.exists(path):
+                    chrome_path = path
+                    print(f"🔍 Chrome 발견: {chrome_path}")
+                    break
+            
+            if not chrome_path:
+                print("❌ Chrome을 찾을 수 없습니다")
+                print("   시도한 경로들:")
+                for path in chrome_paths:
+                    print(f"   - {path}: {'존재함' if os.path.exists(path) else '없음'}")
+                return None
+            
+            # 절대 경로로 변환
+            abs_html_path = os.path.abspath(html_file_path)
+            file_url = f"file://{abs_html_path}"
+            
+            # Chrome 헤드리스 모드로 스크린샷
             cmd = [
-                'capture-website',
-                html_file_path,
-                '--output', output_path,
-                '--width', '900',
-                '--height', '600',
-                '--type', 'png',
-                '--full-page',
-                '--overwrite'
+                chrome_path,
+                "--headless",
+                "--disable-gpu",
+                "--hide-scrollbars",
+                "--force-device-scale-factor=1",
+                "--window-size=900,600",
+                f"--screenshot={output_path}",
+                file_url
             ]
             
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
             
-            if result.returncode == 0 and os.path.exists(output_path):
+            if os.path.exists(output_path):
                 print(f"✅ 변환 완료: {filename}")
                 return output_path
             else:
