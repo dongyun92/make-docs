@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기술 개발 로드맵</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+        .container {
+            padding: 15px;
+            width: 800px;
+            height: 400px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .roadmap {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 20px;
+            height: 320px;
+        }
+        .phase {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .phase-header {
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .phase1 .phase-header { background: #ef4444; }
+        .phase2 .phase-header { background: #f59e0b; }
+        .phase3 .phase-header { background: #10b981; }
+        .phase-content {
+            padding: 20px;
+            border-radius: 8px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .phase1 .phase-content { background: #fee2e2; }
+        .phase2 .phase-content { background: #fef3c7; }
+        .phase3 .phase-content { background: #d1fae5; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">AutoFlight 기술 개발 로드맵</div>
+        <div class="roadmap">
+            <div class="phase phase1">
+                <div class="phase-header">1단계 (2025-2026)</div>
+                <div class="phase-content">
+                    • 기본 운항 시스템<br>
+                    • 조종사 탑승 운항<br>
+                    • 안전성 검증<br>
+                    • 정비 체계 구축<br>
+                    • 파일럿 프로젝트 운영
+                </div>
+            </div>
+            <div class="phase phase2">
+                <div class="phase-header">2단계 (2027-2028)</div>
+                <div class="phase-content">
+                    • 자율비행 고도화<br>
+                    • 운항 최적화<br>
+                    • 예측 정비 시스템<br>
+                    • 서비스 확장<br>
+                    • 네트워크 구축
+                </div>
+            </div>
+            <div class="phase phase3">
+                <div class="phase-header">3단계 (2029-2030)</div>
+                <div class="phase-content">
+                    • 완전 자율비행<br>
+                    • AI 기반 관제<br>
+                    • 스마트 충전<br>
+                    • 통합 플랫폼<br>
+                    • 상용화 완성
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

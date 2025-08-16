@@ -1,0 +1,36 @@
+🔧 수동 설치 가이드 (pip 없는 경우)
+=====================================
+
+setup_final.bat이 실패하는 경우 수동으로 설치하세요:
+
+📋 1단계: pip 설치
+------------------
+1. 웹브라우저에서 다음 주소로 이동:
+   https://bootstrap.pypa.io/get-pip.py
+
+2. 페이지에서 우클릭 → "다른 이름으로 저장"
+   → 프로그램 폴더에 "get-pip.py" 저장
+
+3. 명령 프롬프트에서 실행:
+   python get-pip.py --user
+
+📋 2단계: 라이브러리 설치
+------------------------
+python -m pip install python-docx --user
+python -m pip install pillow --user
+
+📋 3단계: 설치 확인
+------------------
+python -c "import docx; print('OK')"
+python -c "import PIL; print('OK')"
+
+✅ 둘 다 "OK" 출력되면 성공!
+
+💡 대안: 표준 Python 재설치
+---------------------------
+현재 MSYS2 Python을 사용 중이시면, 
+표준 Python으로 재설치를 권장합니다:
+
+1. https://www.python.org/downloads/
+2. 설치시 "Add Python to PATH" 체크
+3. setup_final.bat 재실행

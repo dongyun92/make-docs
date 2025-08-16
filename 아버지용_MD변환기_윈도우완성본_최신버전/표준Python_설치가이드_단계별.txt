@@ -1,0 +1,62 @@
+🐍 표준 Python 설치 가이드 (단계별)
+==================================
+
+🎯 목표: MSYS2 Python → 표준 Python 교체
+
+📋 1단계: Python 다운로드
+-------------------------
+1. 웹브라우저에서 이 주소로 이동:
+   https://www.python.org/downloads/
+
+2. 큰 노란색 버튼 "Download Python 3.12.x" 클릭
+   (자동으로 윈도우용 다운로드됩니다)
+
+3. python-3.12.x-amd64.exe 파일 다운로드 완료 대기
+
+📋 2단계: Python 설치 (중요!)
+-----------------------------
+1. 다운로드된 python-3.12.x-amd64.exe 우클릭 → "관리자 권한으로 실행"
+
+2. ⚠️ 중요한 체크박스들:
+   ✅ "Add python.exe to PATH" (반드시 체크!)
+   ✅ "Install launcher for all users" (체크)
+
+3. "Install Now" 클릭 (기본 설치)
+
+4. 설치 완료까지 대기 (2-3분)
+
+5. "Close" 버튼 클릭
+
+📋 3단계: 설치 확인
+------------------
+1. "Windows키 + R" → "cmd" 입력 → Enter
+   (새로운 명령 프롬프트 창 열기)
+
+2. 다음 명령어 입력:
+   python --version
+   
+3. 결과 예시:
+   Python 3.12.7  ← 이렇게 나오면 성공!
+   
+4. pip 확인:
+   python -m pip --version
+   
+5. 결과 예시:
+   pip 24.x.x from... ← 이렇게 나오면 성공!
+
+📋 4단계: MD 변환기 설치
+-----------------------
+1. 기존 프로그램 폴더로 이동
+2. setup_final.bat 우클릭 → "관리자 권한으로 실행"
+3. 이제 모든 것이 자동으로 설치됩니다!
+
+✅ 예상 결과:
+OK Python found
+Python 3.12.7
+Pip is available
+Installing: python-docx
+Installing: pillow
+python-docx: OK
+pillow: OK
+
+🎉 완료 후 start_program.bat 실행하면 끝!

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사업 추진 로드맵</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+        .container {
+            padding: 15px;
+            width: 800px;
+            height: 400px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">AutoFlight Prosperity 제주도 사업 추진 로드맵</div>
+        <canvas id="scheduleChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('scheduleChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
+                datasets: [{
+                    label: '1단계: 파일럿 프로젝트 (기체 3대, 연 7천명)',
+                    data: [1, 1, 0, 0, 0, 0],
+                    backgroundColor: '#ef4444'
+                }, {
+                    label: '2단계: 네트워크 확장 (기체 8대, 연 2.5만명)',
+                    data: [0, 0, 1, 1, 0, 0],
+                    backgroundColor: '#f59e0b'
+                }, {
+                    label: '3단계: 본격 상용화 (기체 15대, 연 10만명)',
+                    data: [0, 0, 0, 0, 1, 1],
+                    backgroundColor: '#10b981'
+                }]
+            },
+            options: {
+                animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true,
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

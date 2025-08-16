@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글로벌 UAM 시장 전망</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+        .container {
+            padding: 15px;
+            width: 800px;
+            height: 400px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        canvas {
+            max-width: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">글로벌 UAM 시장 전망 (2024-2030)</div>
+        <canvas id="marketForecastChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('marketForecastChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                datasets: [{
+                    label: '글로벌 시장 (억달러)',
+                    data: [100, 120, 180, 280, 450, 750, 1500],
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }, {
+                    label: '아시아태평양 (억달러)',
+                    data: [35, 42, 63, 98, 158, 263, 525],
+                    borderColor: '#dc2626',
+                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '시장 규모 (억달러)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

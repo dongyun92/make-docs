@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연도별 투자 배분 계획</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+        .container {
+            padding: 15px;
+            width: 800px;
+            height: 400px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">연도별 투자 배분 계획</div>
+        <canvas id="investmentChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('investmentChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['2025', '2026', '2027', '2028', '2029'],
+                datasets: [{
+                    label: '기체 도입 (억원)',
+                    data: [36, 24, 60, 36, 24],
+                    backgroundColor: '#8b5cf6'
+                }, {
+                    label: '인프라 구축 (억원)',
+                    data: [95, 0, 75, 25, 25],
+                    backgroundColor: '#06b6d4'
+                }, {
+                    label: '운영자금 (억원)',
+                    data: [20, 10, 10, 5, 5],
+                    backgroundColor: '#84cc16'
+                }]
+            },
+            options: {
+                animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '투자액 (억원)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

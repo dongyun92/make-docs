@@ -1,0 +1,34 @@
+🏢 윈도우 서버 환경 문제 해결 방법
+==================================
+
+현재 문제: SSL 인증서 검증 실패
+원인: 윈도우 서버/기업 환경의 보안 정책
+
+🎯 가장 쉬운 해결방법: 표준 Python 설치
+----------------------------------------
+1. https://www.python.org/downloads/ 접속
+2. "Download Python 3.12.x" 클릭
+3. 설치 중 반드시 체크: "Add Python to PATH" ✅
+4. 설치 완료 후 setup_final.bat 재실행
+
+📥 현재 MSYS2 Python → 표준 Python 전환
+---------------------------------------
+장점:
+- pip 기본 포함
+- SSL 인증서 문제 없음
+- 윈도우 환경에 최적화
+- 대부분의 패키지 호환성 보장
+
+🔧 대안: 수동 설치 (고급 사용자용)
+----------------------------------
+1. pip 수동 설치:
+   - get-pip.py 직접 다운로드
+   - python get-pip.py --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org
+
+2. 라이브러리 수동 설치:
+   python -m pip install python-docx pillow --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --user
+
+⚡ 권장사항
+-----------
+시간 절약을 위해 표준 Python 설치를 강력히 권장합니다.
+10분 내에 모든 문제가 해결됩니다.

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoFlight Prosperity 기체 사양</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+        .container {
+            padding: 15px;
+            width: 800px;
+            height: 400px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .spec-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+            position: relative;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        .aircraft-body {
+            width: 400px;
+            height: 120px;
+            background: #3b82f6;
+            border-radius: 60px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .wing {
+            width: 200px;
+            height: 40px;
+            background: #1e40af;
+            border-radius: 20px;
+            position: absolute;
+        }
+        .wing-left { left: -220px; top: 40px; }
+        .wing-right { right: -220px; top: 40px; }
+        .rotor {
+            width: 20px;
+            height: 20px;
+            background: #dc2626;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .rotor1 { top: -30px; left: 50px; }
+        .rotor2 { top: -30px; left: 150px; }
+        .rotor3 { top: -30px; left: 250px; }
+        .rotor4 { top: -30px; left: 350px; }
+        .rotor5 { bottom: -30px; left: 50px; }
+        .rotor6 { bottom: -30px; left: 150px; }
+        .rotor7 { bottom: -30px; left: 250px; }
+        .rotor8 { bottom: -30px; left: 350px; }
+        .spec-label {
+            position: absolute;
+            background: white;
+            padding: 8px 12px;
+            border: 2px solid #3b82f6;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        .label1 { top: 10px; left: 50%; transform: translateX(-50%); }
+        .label2 { bottom: 10px; left: 50%; transform: translateX(-50%); }
+        .label3 { left: 10px; top: 50%; transform: translateY(-50%); }
+        .label4 { right: 10px; top: 50%; transform: translateY(-50%); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">AutoFlight Prosperity 기체 사양</div>
+        <div class="spec-diagram">
+            <div class="aircraft-body">
+                AutoFlight Prosperity
+                <div class="wing wing-left"></div>
+                <div class="wing wing-right"></div>
+                <div class="rotor rotor1"></div>
+                <div class="rotor rotor2"></div>
+                <div class="rotor rotor3"></div>
+                <div class="rotor rotor4"></div>
+                <div class="rotor rotor5"></div>
+                <div class="rotor rotor6"></div>
+                <div class="rotor rotor7"></div>
+                <div class="rotor rotor8"></div>
+            </div>
+            <div class="spec-label label1">최대 항속거리: 250km</div>
+            <div class="spec-label label2">순항속도: 200km/h</div>
+            <div class="spec-label label3">승객 수: 3명</div>
+            <div class="spec-label label4">이륙중량: 2,000kg</div>
+        </div>
+    </div>
+</body>
+</html>

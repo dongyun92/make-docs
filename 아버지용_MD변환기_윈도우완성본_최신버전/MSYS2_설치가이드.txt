@@ -1,0 +1,25 @@
+🔧 MSYS2 환경에서 설치 가이드
+================================
+
+MSYS2 환경이 감지되었습니다. 다음 명령어를 실행해주세요:
+
+📋 필수 라이브러리 설치:
+pacman -S mingw-w64-x86_64-python-docx
+pacman -S mingw-w64-x86_64-python-pillow
+
+📋 전체 명령어 (한번에 실행):
+pacman -S --noconfirm mingw-w64-x86_64-python-docx mingw-w64-x86_64-python-pillow
+
+🚀 설치 완료 후:
+1. start_program.bat 실행
+2. 프로그램 정상 작동 확인
+
+❌ 문제 해결:
+- "package not found" 오류시: pacman -Syu 로 패키지 DB 업데이트
+- 권한 오류시: 관리자 권한으로 MSYS2 터미널 실행
+- Python 인식 안됨: 환경변수 PATH에 MSYS2 Python 경로 추가
+
+💡 대안 방법:
+1. 표준 Python 설치: https://www.python.org/downloads/
+2. 설치시 "Add Python to PATH" 체크
+3. setup_final.bat 재실행

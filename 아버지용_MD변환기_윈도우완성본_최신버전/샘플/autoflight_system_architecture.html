@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>통합 시스템 구성도</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+        .container {
+            padding: 15px;
+            width: 800px;
+            height: 400px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .system-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            height: 320px;
+        }
+        .system-box {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .control-center {
+            background: #1e40af;
+            flex: 1;
+        }
+        .main-systems {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex: 2;
+        }
+        .main-systems .system-box {
+            flex: 1;
+        }
+        .vertiport { background: #10b981; }
+        .aircraft { background: #3b82f6; }
+        .service { background: #f59e0b; }
+        .support-systems {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex: 1;
+        }
+        .support-systems .system-box {
+            flex: 1;
+            font-size: 12px;
+        }
+        .weather { background: #8b5cf6; }
+        .maintenance { background: #84cc16; }
+        .security { background: #06b6d4; }
+        .emergency { background: #ec4899; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">AutoFlight UAM 통합 시스템 구성도</div>
+        <div class="system-diagram">
+            <div class="system-box control-center">
+                통합 관제 시스템<br>
+                (교통관제, 기상정보, 비행계획)
+            </div>
+            <div class="main-systems">
+                <div class="system-box vertiport">
+                    버티포트<br>
+                    이착륙장<br>
+                    충전 시설
+                </div>
+                <div class="system-box aircraft">
+                    AutoFlight<br>Prosperity<br>
+                    자율비행시스템<br>
+                    안전관리시스템
+                </div>
+                <div class="system-box service">
+                    고객 서비스<br>
+                    예약 시스템<br>
+                    모바일 앱
+                </div>
+            </div>
+            <div class="support-systems">
+                <div class="system-box weather">기상 모니터링</div>
+                <div class="system-box maintenance">정비 관리</div>
+                <div class="system-box security">보안 시스템</div>
+                <div class="system-box emergency">응급 대응</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

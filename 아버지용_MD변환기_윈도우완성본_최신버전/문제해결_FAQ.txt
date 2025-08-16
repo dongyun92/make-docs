@@ -1,0 +1,37 @@
+❓ 문제해결 FAQ
+===============
+
+Q1: "python: command not found" 오류가 나요
+A1: PATH 설정이 안된 것입니다
+    해결: Python 재설치시 "Add python.exe to PATH" 체크 필수
+
+Q2: 여전히 MSYS2 Python이 실행돼요
+A2: 환경변수 우선순위 문제입니다
+    해결: 
+    1. 시작메뉴 → "환경 변수" 검색
+    2. "시스템 환경 변수 편집" 클릭
+    3. "환경 변수" 버튼
+    4. "시스템 변수" → "Path" 선택 → "편집"
+    5. Python 설치 경로를 맨 위로 이동
+       (예: C:\Users\admin\AppData\Local\Programs\Python\Python312\)
+    6. OK → 재부팅
+
+Q3: 관리자 권한이 없어요
+A3: 
+    - 파일 우클릭 → "관리자 권한으로 실행" 선택
+    - 또는 cmd를 관리자 권한으로 실행 후 명령어 입력
+
+Q4: 설치가 느려요
+A4: 정상입니다. 인터넷 속도에 따라 5-10분 소요
+
+Q5: "Microsoft Visual C++ 14.0 is required" 오류
+A5: 
+    1. https://visualstudio.microsoft.com/ko/visual-cpp-build-tools/
+    2. "Build Tools for Visual Studio 2022" 다운로드
+    3. 설치 후 Python 라이브러리 재설치
+
+🆘 그래도 안되면:
+1. 기존 Python 완전 삭제
+2. 컴퓨터 재부팅  
+3. 표준 Python 새로 설치
+4. "Add to PATH" 체크 확인

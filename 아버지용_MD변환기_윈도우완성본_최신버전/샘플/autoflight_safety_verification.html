@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>안전성 검증 현황</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+        .container {
+            padding: 15px;
+            width: 800px;
+            height: 400px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .safety-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .timeline-date {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 25px;
+            min-width: 120px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .timeline-content {
+            flex: 1;
+            background: #f1f5f9;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .achievement {
+            color: #059669;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .timeline-item.completed .timeline-date {
+            background: #10b981;
+        }
+        .timeline-item.inprogress .timeline-date {
+            background: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">AutoFlight Prosperity 안전성 검증 현황</div>
+        <div class="safety-timeline">
+            <div class="timeline-item completed">
+                <div class="timeline-date">2022년</div>
+                <div class="timeline-content">
+                    <strong>초기 시험비행 완료</strong><br>
+                    <span class="achievement">✓ 10,000시간 무사고 기록</span>
+                </div>
+            </div>
+            <div class="timeline-item completed">
+                <div class="timeline-date">2023년</div>
+                <div class="timeline-content">
+                    <strong>중국 민항국(CAAC) 형식증명 획득</strong><br>
+                    <span class="achievement">✓ 상용화 허가 취득</span>
+                </div>
+            </div>
+            <div class="timeline-item completed">
+                <div class="timeline-date">2024년</div>
+                <div class="timeline-content">
+                    <strong>누적 비행시간 40,000시간 달성</strong><br>
+                    <span class="achievement">✓ 무사고 운항 기록 유지</span>
+                </div>
+            </div>
+            <div class="timeline-item inprogress">
+                <div class="timeline-date">진행 중</div>
+                <div class="timeline-content">
+                    <strong>국제 인증 추진</strong><br>
+                    • EASA(유럽) 인증 진행 중<br>
+                    • FAA(미국) 인증 2025년 목표<br>
+                    • 한국 감항인증 2024년 말 예상
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

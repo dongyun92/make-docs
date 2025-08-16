@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리스크 매트릭스</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+        .container {
+            padding: 15px;
+            width: 800px;
+            height: 400px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">AutoFlight Prosperity 사업 리스크 매트릭스</div>
+        <canvas id="riskChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('riskChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: '안전사고',
+                    data: [{x: 2, y: 9}],
+                    backgroundColor: '#dc2626',
+                    pointRadius: 10,
+                    pointHoverRadius: 12
+                }, {
+                    label: '규제 변경',
+                    data: [{x: 5, y: 6}],
+                    backgroundColor: '#f59e0b',
+                    pointRadius: 10,
+                    pointHoverRadius: 12
+                }, {
+                    label: '수요 부족',
+                    data: [{x: 6, y: 8}],
+                    backgroundColor: '#ef4444',
+                    pointRadius: 10,
+                    pointHoverRadius: 12
+                }, {
+                    label: '기술 결함',
+                    data: [{x: 3, y: 5}],
+                    backgroundColor: '#84cc16',
+                    pointRadius: 10,
+                    pointHoverRadius: 12
+                }]
+            },
+            options: {
+                animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '발생 가능성 (1: 낮음 ~ 10: 높음)'
+                        },
+                        min: 0,
+                        max: 10
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '영향도 (1: 낮음 ~ 10: 높음)'
+                        },
+                        min: 0,
+                        max: 10
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운영 조직도</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+        .container {
+            padding: 15px;
+            width: 800px;
+            height: 400px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .org-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 20px;
+        }
+        .org-level {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .org-box {
+            background: #3b82f6;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 120px;
+            font-weight: bold;
+        }
+        .org-box.manager { background: #dc2626; }
+        .org-box.team { background: #10b981; }
+        .org-line {
+            width: 2px;
+            height: 20px;
+            background: #666;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-title">AutoFlight Prosperity 제주도 사업 운영 조직도</div>
+        <div class="org-chart">
+            <div class="org-level">
+                <div class="org-box manager">사업 총괄<br>(총 32명)</div>
+            </div>
+            <div class="org-line"></div>
+            <div class="org-level">
+                <div class="org-box">운항 부문</div>
+                <div class="org-box">정비 부문</div>
+                <div class="org-box">운영 지원</div>
+            </div>
+            <div class="org-line"></div>
+            <div class="org-level">
+                <div class="org-box team">조종사<br>(12명)</div>
+                <div class="org-box team">정비사<br>(8명)</div>
+                <div class="org-box team">품질관리<br>(2명)</div>
+                <div class="org-box team">고객서비스<br>(6명)</div>
+                <div class="org-box team">관제사<br>(4명)</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
